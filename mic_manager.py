@@ -1,6 +1,7 @@
 """Find and talk to the outdoor ESP32 RTSP microphone."""
 import json
 import os
+import time
 from dataclasses import asdict, dataclass
 
 import requests
@@ -97,3 +98,57 @@ def summarize_status(raw):
         "highpass_enabled": raw.get("hp_enable") is True,
         "fw_version": raw.get("fw_version"),
     }
+
+
+def browse_mdns(timeout=5.0):
+    """Return [(hostname, ip)] for esp32mic-* HTTP services on the LAN."""
+    from zeroconf import ServiceBrowser, ServiceListener, Zeroconf
+
+    found = {}
+
+    class Listener(ServiceListener):
+        def add_service(self, zc, type_, name):
+            if not name.lower().startswith(MDNS_PREFIX):
+                return
+            info = zc.get_service_info(type_, name, timeout=2000)
+            if info and info.parsed_addresses():
+                found[name.split(".")[0]] = info.parsed_addresses()[0]
+
+        def update_service(self, zc, type_, name):
+            self.add_service(zc, type_, name)
+
+        def remove_service(self, zc, type_, name):
+            pass
+
+    zc = Zeroconf()
+    try:
+        ServiceBrowser(zc, "_http._tcp.local.", Listener())
+        time.sleep(timeout)
+    finally:
+        zc.close()
+    return sorted(found.items())
+
+
+def _responds(client_factory, ip):
+    try:
+        client_factory(ip, timeout=HTTP_TIMEOUT).get_status()
+        return True
+    except MicError:
+        return False
+
+
+def discover(saved=None, ignore=frozenset(), browse=browse_mdns, client_factory=MicClient):
+    """Find the mic on the LAN. With `saved`, only that mic counts."""
+    found = browse()
+    if saved is not None:
+        ips = [ip for host, ip in found if host == saved.hostname]
+        if saved.ip not in ips:
+            ips.append(saved.ip)
+        for ip in ips:
+            if _responds(client_factory, ip):
+                return MicInfo(saved.hostname, ip)
+        return None
+    for host, ip in found:
+        if host not in ignore and _responds(client_factory, ip):
+            return MicInfo(host, ip)
+    return None

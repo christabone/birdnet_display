@@ -14,7 +14,6 @@
 | 2 | Adafruit SPH0645LM4H I2S MEMS mic breakout | 3421 | 1528-1908-ND | ~$7 ea | 1 spare; the bare chip is going obsolete. Header strip ships loose |
 | 2 | Bud PN-1320-MB enclosure, gray, with brackets | PN-1320-MB | 377-1878-ND | ~$7.90 ea | 64×58×35 ext / 58×52×30 int, IP65/66. 1 for drilling practice |
 | 2 | Jacob PG7 nylon cable gland + locknut, IP68 | 50.007PA/SW/G | — | <$1 ea | 3–6.5 mm cable |
-| 1 | StarTech USB-A wall charger | USB2PACWH | — | check | Lives under the outdoor outlet cover |
 | 1 | Adafruit 26 AWG silicone wire, 2 m, red | 1877 | — | $0.95 | |
 | 1 | Adafruit 26 AWG silicone wire, 2 m, black | 1880 | — | $0.95 | |
 | 1 | Adafruit 26 AWG silicone wire, 2 m, 3rd color | 1882 | — | $0.95 | |
@@ -47,13 +46,14 @@
 
 | Qty | Part | Notes |
 |---:|---|---|
-| 1 | Weatherproof "while-in-use" bubble outlet cover | For the outdoor plug |
+| 1 | **Extra-duty (deep)** weatherproof "while-in-use" bubble outlet cover | Must close fully over the plugged-in charger; cord exits the bottom. Also confirm the outlet is **GFCI-protected** (TEST/RESET) |
 | 2 | Stainless hose clamps, sized for the post/tree | Mic mount |
 
 ## Already Have
 
 - ASA filament (all printed parts), TPU (backup), soldering iron
 - Spare USB-A to USB-C cable, 1–2 m (mic power; USB-C end gets cut and soldered through the gland)
+- Spare **UL/CSA-listed** USB charger, ≥1 A (mic draws ~0.3 A). No outdoor-rated USB chargers exist; the in-use cover provides the wet-location protection
 
 ## Deliberately Not Buying
 
@@ -79,7 +79,6 @@ Prices are approximate; check each live page before checkout.
 2x  Adafruit SPH0645LM4H I2S MEMS mic breakout ..... Mfr PN 3421        (DK 1528-1908-ND)       ~$7 ea     (1 spare)
 2x  Bud PN-1320-MB enclosure, gray, w/ brackets .... Mfr PN PN-1320-MB  (DK 377-1878-ND)        ~$7.90 ea  (1 for drilling practice)
 2x  Jacob PG7 nylon cable gland + locknut, IP68 .... Mfr PN 50.007PA/SW/G                        <$1 ea
-1x  StarTech USB-A wall charger .................... Mfr PN USB2PACWH
 1x  Adafruit 26 AWG silicone wire, 2 m (red) ....... Mfr PN 1877                                 $0.95
 1x  Adafruit 26 AWG silicone wire, 2 m (black) ..... Mfr PN 1880                                 $0.95
 1x  Adafruit 26 AWG silicone wire, 2 m (3rd color) . Mfr PN 1882                                 $0.95
@@ -104,10 +103,11 @@ Prices are approximate; check each live page before checkout.
 1x  Metric silicone O-ring assortment  (need ~10 mm ID x 1.5 mm)
 
 === HARDWARE STORE ===
-1x  Weatherproof "while-in-use" bubble outlet cover
+1x  Extra-duty (deep) weatherproof "while-in-use" bubble outlet cover  (must close over the charger; confirm outlet is GFCI)
 2x  Stainless hose clamps, sized for the post/tree  (for the mic mount)
 
 === ALREADY HAVE ===
 ASA filament (all printed parts), TPU (backup), soldering iron
 Spare USB-A to USB-C cable, 1-2 m (mic power; gets cut)
+Spare UL/CSA-listed USB charger, >=1 A (lives under the in-use cover)
 ```

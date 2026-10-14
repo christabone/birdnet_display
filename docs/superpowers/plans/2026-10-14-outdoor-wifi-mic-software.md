@@ -2575,6 +2575,13 @@ No code unless a check fails. A failure goes back to the owning task as a bug fi
   1. Run `for i in $(seq 1 288); do date +%T; vcgencmd measure_temp; vcgencmd get_throttled; sleep 300; done > ~/thermal.log` for 24 h with BirdNET-Go and the kiosk running.
   2. Record the max temperature.
   3. If it never nears 70 °C, note that the fan can be unplugged.
+- [ ] **Step 12b: Recovery checks (from the final code review).**
+  - Kill `bird-display` mid-setup with `sudo systemctl restart bird-display`. Expected: the `birdnet-mic-watchdog` timer brings home Wi-Fi back within about 3 minutes.
+  - Boot the Pi with no network, then join Wi-Fi. Expected: `wg0` comes up within about 5 minutes via `wg-reresolve`.
+  - Make the BirdNET-Go restart fail once (for example `sudo systemctl mask birdnet-go` during setup, then unmask). Expected: the next monitor pass restarts it.
+  - Use a test SSID containing `:` and `\`, and confirm the mic joins.
+  - Run `curl /api/status` and confirm `mdns_hostname` matches `mic_config.json`.
+
 - [ ] **Step 13: Record and commit results**
 
 Write `docs/research/bench-results.md` with the date, pass/fail per step, measured values (setup time, RSSI at the intended mount distance, max Pi temp), and any fixes made. Then:

@@ -3,6 +3,7 @@
 **Date:** 2026-10-14
 **Status:** Draft for review
 **Builds on:** this repo (BirdNET Display) + [birdnetgo-esp32-rtsp-mic](https://github.com/Sukecz/birdnetgo-esp32-rtsp-mic) firmware v1.26
+**Parts list:** [../../parts-list.md](../../parts-list.md) · **Sourcing notes:** [../../research/sourcing-notes.md](../../research/sourcing-notes.md)
 
 ## 1. Goal
 

@@ -53,7 +53,7 @@ A gift build for Chris's parents: the BirdNET Display (indoors) plus a weatherpr
 - CAD: model around the purchased box's measured internal dims; publish `.step` + `.3mf` under `3d print files/outdoor mic housing/`, mirroring the existing folder layout.
 
 ### Power
-- Weatherproof "while-in-use" outlet cover (hardware store) + USB-A wall charger + 5 m USB-A cable (L-com CAU2CA-5M), USB-C end cut off and soldered as above. 28 AWG over 5 m drops about 0.6 V at Wi-Fi TX peaks (about 4.4 V at the XIAO) — acceptable. For runs over 5 m, splice in outdoor/UV-rated 18–20 AWG 2-conductor cable.
+- Weatherproof "while-in-use" outlet cover (hardware store) + USB-A wall charger + **1–2 m** USB-A cable (the mic mounts near the outlet), USB-C end cut off and soldered as above, with a drip loop below the box. Voltage drop is negligible at this length. If the mount moves farther than about 5 m from the outlet, splice in outdoor/UV-rated 18–20 AWG 2-conductor cable.
 
 ## 3. Software — Display App
 

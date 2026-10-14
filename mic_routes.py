@@ -3,7 +3,7 @@ from dataclasses import asdict
 
 from flask import Blueprint, jsonify, request
 
-from mic_manager import MicClient, MicError, summarize_status
+from mic_manager import MicClient, MicError, MicRejected, summarize_status
 from remote_help import remote_help_status
 
 
@@ -49,6 +49,8 @@ def create_mic_blueprint(service, provisioner, remote_status=remote_help_status,
                 client.set_highpass(body["highpass_enabled"])
         except ValueError as e:
             return jsonify({"status": "error", "message": str(e)}), 400
+        except MicRejected as e:
+            return jsonify({"status": "error", "message": f"The microphone rejected that setting ({e})"}), 400
         except MicError:
             return jsonify({"status": "error", "message": "Microphone not responding"}), 502
         return jsonify({"status": "ok"})

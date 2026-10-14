@@ -119,3 +119,15 @@ def test_provision_start_status_and_double_tap(setup):
 def test_remote_help(setup):
     client, _, _ = setup
     assert client.get("/api/remote_help/status").get_json()["connected"] is True
+
+
+def test_settings_rejected_by_mic_is_400(setup, monkeypatch):
+    from mic_manager import MicRejected
+    client, cfg, _ = setup
+    cfg.save(MicInfo("esp32mic-a", "10.0.0.5"))
+
+    def reject(self, enabled):
+        raise MicRejected("invalid_value")
+    monkeypatch.setattr(FakeClient, "set_highpass", reject)
+    r = client.post("/api/mic/settings", json={"highpass_enabled": True})
+    assert r.status_code == 400 and "rejected" in r.get_json()["message"].lower()

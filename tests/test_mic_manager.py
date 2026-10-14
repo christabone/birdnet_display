@@ -129,3 +129,15 @@ def test_summarize_status_tolerates_missing_fields():
     s = summarize_status({})
     assert s["reachable"] is True and s["connected"] is False
     assert s["rssi"] is None and s["highpass_enabled"] is False
+
+
+def test_rejected_setting_raises_mic_rejected():
+    from mic_manager import MicRejected
+    session = FakeSession(post_response=FakeResponse(payload={"ok": False, "error": "invalid_value"}))
+    with pytest.raises(MicRejected, match="invalid_value"):
+        MicClient("10.0.0.5", session=session).set_gain(2)
+
+
+def test_accepted_setting_and_non_json_reply_are_fine():
+    MicClient("10.0.0.5", session=FakeSession(post_response=FakeResponse(payload={"ok": True}))).set_gain(2)
+    MicClient("10.0.0.5", session=FakeSession(post_response=FakeResponse(payload=None))).restart()

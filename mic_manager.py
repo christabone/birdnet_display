@@ -22,6 +22,10 @@ class MicError(Exception):
     """The mic could not be reached or rejected a request."""
 
 
+class MicRejected(MicError):
+    """The mic answered but refused the request (firmware replied {"ok": false})."""
+
+
 class MicConfig:
     """Remembers which mic this display uses (hostname + last known IP)."""
 
@@ -72,6 +76,12 @@ class MicClient:
             r.raise_for_status()
         except requests.RequestException as e:
             raise MicError(str(e)) from e
+        try:
+            reply = r.json()
+        except ValueError:
+            return
+        if isinstance(reply, dict) and reply.get("ok") is False:
+            raise MicRejected(reply.get("error") or "rejected")
 
     def set_gain(self, gain):
         gain = float(gain)

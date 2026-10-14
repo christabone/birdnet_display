@@ -109,3 +109,34 @@ def test_failed_restart_is_retried_on_next_call(tmp_path):
     # Once a restart succeeded, unchanged config means no more restarts.
     point_birdnet_go_at("192.168.1.50", path, run=ok)
     assert len(calls) == 2
+
+
+def test_rewrite_keeps_file_permissions(tmp_path):
+    import os
+    import stat
+    path = write(tmp_path, BASE)
+    os.chmod(path, 0o600)  # BirdNET-Go keeps secrets in this file
+    set_mic_stream("rtsp://192.168.1.50:8554/audio1", path)
+    assert stat.S_IMODE(os.stat(path).st_mode) == 0o600
+    assert not [p for p in os.listdir(tmp_path) if p.endswith(".tmp") or p.startswith("tmp")]
+
+
+LEGACY = """\
+realtime:
+  rtsp:
+    streams:
+      - name: ESP32 Mic
+        url: rtsp://10.42.0.50:8554/audio1
+        type: rtsp
+        transport: tcp
+      - name: Garage Cam
+        url: rtsp://192.168.1.9/stream
+"""
+
+
+def test_legacy_ap_mode_stream_is_removed(tmp_path):
+    path = write(tmp_path, LEGACY)
+    set_mic_stream("rtsp://192.168.1.50:8554/audio1", path)
+    text = open(path).read()
+    assert "10.42.0.50" not in text
+    assert "Garage Cam" in text and STREAM_NAME in text

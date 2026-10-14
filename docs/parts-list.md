@@ -25,7 +25,6 @@
 |---:|---|---|---|---|---|
 | 1 | Raspberry Pi 4 Model B, 4 GB | SC0194(9) | 1690-RASPBERRYPI4B-4GB-ND | **check** | Pi prices rose in 2025–26; snapshots conflict |
 | 1 | Raspberry Pi 15 W USB-C power supply, US, white | SC0445 | 2648-SC0445-ND | $8 | Black SC0218 shows 0 stock |
-| 1 | Kingston High Endurance microSD, 32 GB | SDCE/32GB | — | check | Always-on logging |
 | 1 | Seeed Armor Lite heatsink with PWM fan, Pi 4 | 114992661 | 1597-114992661-ND | ~$9.90 | Same design as the case's GeeekPi. Fan is thermostat-controlled (off below 70 °C) |
 
 ## Amazon
@@ -34,6 +33,7 @@
 |---:|---|---|
 | 1 | **Hosyond 5" DSI 800×480 IPS capacitive touchscreen** — ASIN [B0CXTFN8K9](https://www.amazon.com/dp/B0CXTFN8K9) | ~$35. Same OEM board as the case's AliExpress screen. Backup: iUoyoMon [B0F1D5LNPD](https://www.amazon.com/dp/B0F1D5LNPD). **Not** Waveshare (holes 2 mm wider) |
 | 1 | 15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15–20 cm | Screen ships with a Pi 5 cable |
+| 1 | High-endurance microSD, 32–64 GB: Samsung PRO Endurance, SanDisk High Endurance, or Kingston High Endurance | ~$10–20. Buy "shipped and sold by Amazon" to avoid fakes. (DigiKey Kingston was ~$112 CAD) |
 | 1 | Waterproof acoustic membrane vent stickers, ePTFE, ~6–10 mm | Search "waterproof acoustic membrane vent sticker". Not on DigiKey |
 | 1 | M2.5 heat-set inserts, M2.5 × D3.5 × L3 | 4 for display, 6 for mic |
 | 1 | M2.5 button-head screw kit (4 / 6 / 8 mm) | Display: 4× 4 mm, 4× 8 mm; mic: 2× 4 mm |
@@ -87,13 +87,13 @@ Prices are approximate; check each live page before checkout.
 === DIGIKEY: DISPLAY UNIT ===
 1x  Raspberry Pi 4 Model B, 4 GB ................... Mfr PN SC0194(9)   (DK 1690-RASPBERRYPI4B-4GB-ND)  CHECK PRICE
 1x  Raspberry Pi 15 W USB-C power supply, US, white  Mfr PN SC0445      (DK 2648-SC0445-ND)     $8
-1x  Kingston High Endurance microSD, 32 GB ......... Mfr PN SDCE/32GB
 1x  Seeed Armor Lite heatsink w/ PWM fan, Pi 4 ..... Mfr PN 114992661   (DK 1597-114992661-ND)  ~$9.90
 
 === AMAZON ===
 1x  Hosyond 5" DSI 800x480 IPS capacitive touchscreen   ASIN B0CXTFN8K9  ~$35
       (backup: iUoyoMon 5" DSI 800x480, ASIN B0F1D5LNPD)
 1x  15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15-20 cm  (screen ships with a Pi 5 cable)
+1x  High-endurance microSD 32-64 GB (Samsung PRO Endurance / SanDisk High Endurance / Kingston High Endurance)  (sold by Amazon, avoid fakes)
 1x  Waterproof acoustic membrane vent stickers, ePTFE, ~6-10 mm  (search: "waterproof acoustic membrane vent sticker")
 1x  M2.5 heat-set threaded inserts, M2.5 x D3.5 x L3  (need 4+ for display, 6 for mic)
 1x  M2.5 button-head screw kit incl. 4 mm, 6 mm, 8 mm  (need 4x 4 mm, 4x 8 mm button-head)

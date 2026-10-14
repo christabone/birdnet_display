@@ -35,7 +35,6 @@
 |---:|---|---|
 | 1 | **Hosyond 5" DSI 800×480 IPS capacitive touchscreen** — ASIN [B0CXTFN8K9](https://www.amazon.com/dp/B0CXTFN8K9) | ~$35. Same OEM board as the case's AliExpress screen. Backup: iUoyoMon [B0F1D5LNPD](https://www.amazon.com/dp/B0F1D5LNPD). **Not** Waveshare (holes 2 mm wider) |
 | 1 | 15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15–20 cm | Screen ships with a Pi 5 cable |
-| 1 | Any cheap USB-A to USB-C cable, 1–2 m (or a spare phone cable) | Mic power. USB-C end gets cut off and soldered to the XIAO through the gland. Skip L-com on DigiKey (~$69 CAD) |
 | 1 | Waterproof acoustic membrane vent stickers, ePTFE, ~6–10 mm | Search "waterproof acoustic membrane vent sticker". Not on DigiKey |
 | 1 | M2.5 heat-set inserts, M2.5 × D3.5 × L3 | 4 for display, 6 for mic |
 | 1 | M2.5 button-head screw kit (4 / 6 / 8 mm) | Display: 4× 4 mm, 4× 8 mm; mic: 2× 4 mm |
@@ -54,6 +53,7 @@
 ## Already Have
 
 - ASA filament (all printed parts), TPU (backup), soldering iron
+- Spare USB-A to USB-C cable, 1–2 m (mic power; USB-C end gets cut and soldered through the gland)
 
 ## Deliberately Not Buying
 
@@ -95,7 +95,6 @@ Prices are approximate; check each live page before checkout.
 1x  Hosyond 5" DSI 800x480 IPS capacitive touchscreen   ASIN B0CXTFN8K9  ~$35
       (backup: iUoyoMon 5" DSI 800x480, ASIN B0F1D5LNPD)
 1x  15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15-20 cm  (screen ships with a Pi 5 cable)
-1x  Any cheap USB-A to USB-C cable, 1-2 m, or a spare phone cable  (mic power; gets cut. Skip L-com, ~$69 CAD)
 1x  Waterproof acoustic membrane vent stickers, ePTFE, ~6-10 mm  (search: "waterproof acoustic membrane vent sticker")
 1x  M2.5 heat-set threaded inserts, M2.5 x D3.5 x L3  (need 4+ for display, 6 for mic)
 1x  M2.5 button-head screw kit incl. 4 mm, 6 mm, 8 mm  (need 4x 4 mm, 4x 8 mm button-head)
@@ -110,4 +109,5 @@ Prices are approximate; check each live page before checkout.
 
 === ALREADY HAVE ===
 ASA filament (all printed parts), TPU (backup), soldering iron
+Spare USB-A to USB-C cable, 1-2 m (mic power; gets cut)
 ```

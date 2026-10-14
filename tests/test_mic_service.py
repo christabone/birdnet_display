@@ -84,3 +84,26 @@ def test_audio_status_shapes(tmp_path):
 def test_audio_status_without_mic(tmp_path):
     svc, _, _ = make(tmp_path, None, set())
     assert svc.audio_status() == {"connected": False, "rssi": 0}
+
+
+def test_other_mic_at_saved_ip_triggers_rediscovery(tmp_path):
+    cfg = MicConfig(str(tmp_path / "mic.json"))
+    cfg.save(MicInfo("esp32mic-a", "10.0.0.5"))
+    seen = {"discover": 0, "birdnet": []}
+
+    class Client:
+        def __init__(self, ip, **kwargs):
+            self.ip = ip
+
+        def get_status(self):
+            return {"streaming": True, "mdns_hostname": "esp32mic-neighbor"}
+
+    def discover_fn(saved=None, **kw):
+        seen["discover"] += 1
+        return None
+
+    svc = MicService(cfg, client_factory=Client, discover_fn=discover_fn,
+                     update_birdnet=lambda ip: seen["birdnet"].append(ip))
+    svc.refresh_once()
+    assert seen["discover"] == 1
+    assert seen["birdnet"] == []  # never point BirdNET-Go at someone else's mic

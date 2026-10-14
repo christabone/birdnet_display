@@ -3,7 +3,7 @@ import threading
 import time
 
 from birdnet_go_config import point_birdnet_go_at
-from mic_manager import MicClient, MicError, discover
+from mic_manager import MicClient, MicError, discover, is_same_mic
 
 STATUS_TIMEOUT = 2
 
@@ -27,7 +27,8 @@ class MicService:
             return
         current = saved
         try:
-            self._status(saved.ip)
+            if not is_same_mic(self._status(saved.ip), saved.hostname):
+                raise MicError(f"another mic answered at {saved.ip}")
         except MicError:
             current = self.discover_fn(saved=saved)
             if current is None:

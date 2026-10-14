@@ -129,12 +129,18 @@ def browse_mdns(timeout=5.0):
     return sorted(found.items())
 
 
-def _responds(client_factory, ip):
+def is_same_mic(status, hostname):
+    """True unless the mic at this address reports a different hostname (older firmware may omit it)."""
+    reported = status.get("mdns_hostname")
+    return not reported or reported == hostname
+
+
+def _responds(client_factory, ip, hostname=None):
     try:
-        client_factory(ip, timeout=HTTP_TIMEOUT).get_status()
-        return True
+        status = client_factory(ip, timeout=HTTP_TIMEOUT).get_status()
     except MicError:
         return False
+    return hostname is None or is_same_mic(status, hostname)
 
 
 def discover(saved=None, ignore=frozenset(), browse=browse_mdns, client_factory=MicClient):
@@ -145,7 +151,7 @@ def discover(saved=None, ignore=frozenset(), browse=browse_mdns, client_factory=
         if saved.ip not in ips:
             ips.append(saved.ip)
         for ip in ips:
-            if _responds(client_factory, ip):
+            if _responds(client_factory, ip, saved.hostname):
                 return MicInfo(saved.hostname, ip)
         return None
     for host, ip in found:

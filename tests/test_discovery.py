@@ -50,3 +50,27 @@ def test_saved_mic_never_swaps_to_another_mic():
 
 def test_nothing_found():
     assert discover(browse=lambda: [], client_factory=make_factory(set())) is None
+
+
+def make_named_factory(hosts_by_ip):
+    class Client:
+        def __init__(self, ip, **kwargs):
+            self.ip = ip
+
+        def get_status(self):
+            if self.ip not in hosts_by_ip:
+                raise MicError("down")
+            return {"streaming": True, "mdns_hostname": hosts_by_ip[self.ip]}
+    return Client
+
+
+def test_saved_ip_now_answered_by_a_different_mic_is_rejected():
+    saved = MicInfo("esp32mic-ours", "192.168.1.50")
+    factory = make_named_factory({"192.168.1.50": "esp32mic-spare"})
+    assert discover(saved=saved, browse=lambda: [], client_factory=factory) is None
+
+
+def test_saved_mic_with_matching_hostname_is_accepted():
+    saved = MicInfo("esp32mic-ours", "192.168.1.50")
+    factory = make_named_factory({"192.168.1.50": "esp32mic-ours"})
+    assert discover(saved=saved, browse=lambda: [], client_factory=factory) == saved

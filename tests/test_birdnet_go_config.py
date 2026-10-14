@@ -87,3 +87,25 @@ def test_restart_failure_raises(tmp_path):
 
     with pytest.raises(subprocess.CalledProcessError):
         point_birdnet_go_at("192.168.1.50", path, run=run)
+
+
+def test_failed_restart_is_retried_on_next_call(tmp_path):
+    path = write(tmp_path, BASE)
+    calls = []
+
+    def failing(cmd, **kwargs):
+        calls.append(cmd)
+        raise subprocess.CalledProcessError(1, cmd)
+
+    def ok(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    with pytest.raises(subprocess.CalledProcessError):
+        point_birdnet_go_at("192.168.1.50", path, run=failing)
+    # Config already holds the URL, but BirdNET-Go never reloaded: the next pass must restart.
+    point_birdnet_go_at("192.168.1.50", path, run=ok)
+    assert len(calls) == 2
+    # Once a restart succeeded, unchanged config means no more restarts.
+    point_birdnet_go_at("192.168.1.50", path, run=ok)
+    assert len(calls) == 2

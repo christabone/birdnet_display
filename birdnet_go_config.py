@@ -42,8 +42,16 @@ def restart_birdnet_go(run=subprocess.run):
 
 
 def point_birdnet_go_at(ip, config_path=DEFAULT_CONFIG_PATH, run=subprocess.run):
-    """Make BirdNET-Go listen to the mic at `ip`. Returns True if it was changed."""
+    """Make BirdNET-Go listen to the mic at `ip`. Returns True if it was changed.
+
+    A marker file records a restart that is still owed, so a restart that fails after the
+    config was written is retried on the next call instead of being lost.
+    """
+    pending = config_path + ".restart-pending"
     changed = set_mic_stream(mic_rtsp_url(ip), config_path)
     if changed:
+        open(pending, "w").close()
+    if os.path.exists(pending):
         restart_birdnet_go(run=run)
+        os.remove(pending)
     return changed

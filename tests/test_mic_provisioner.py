@@ -9,8 +9,9 @@ from mic_provisioner import SETUP_CON_NAME, SETUP_SSID, NetworkOps, Provisioner
 
 class FakeNet:
     def __init__(self, sees=True, home="Home WiFi", creds=("Mom's Wi-Fi & \"stuff\"", "p@ss:w\\rd"),
-                 join_error=None, up_fail_times=0, key_mgmt="wpa-psk"):
+                 join_error=None, up_fail_times=0, key_mgmt="wpa-psk", join_fail_times=0):
         self.key_mgmt = key_mgmt
+        self.join_fail_times = join_fail_times
         self.sees = sees
         self.home = home
         self.creds = creds
@@ -30,6 +31,9 @@ class FakeNet:
         self.log.append(("creds", con))
         return self.creds
 
+    def connection_name(self, con):
+        return self.home
+
     def wifi_security(self, con):
         return self.key_mgmt
 
@@ -41,6 +45,9 @@ class FakeNet:
         self.log.append(("join", ssid, con_name))
         if self.join_error:
             raise self.join_error
+        if self.join_fail_times > 0:
+            self.join_fail_times -= 1
+            raise RuntimeError("AP vanished")
 
     def up(self, con):
         self.log.append(("up", con))
@@ -222,8 +229,18 @@ def test_wifi_credentials_open_network_has_empty_psk():
 
 
 def test_active_connection_none_when_disconnected():
-    run, _ = fake_run({("-g", "GENERAL.CONNECTION", "dev"): ("\n", 0)})
+    run, _ = fake_run({("-g", "GENERAL.CON-UUID", "dev"): ("\n", 0)})
     assert NetworkOps(run=run).active_connection() is None
+
+
+def test_active_connection_is_the_unique_uuid_not_the_name():
+    run, _ = fake_run({("-g", "GENERAL.CON-UUID", "dev"): ("6f1c-uuid\n", 0)})
+    assert NetworkOps(run=run).active_connection() == "6f1c-uuid"
+
+
+def test_connection_name_reads_id():
+    run, _ = fake_run({("-g", "connection.id", "connection"): ("Mom\\:s Net\n", 0)})
+    assert NetworkOps(run=run).connection_name("6f1c-uuid") == "Mom:s Net"
 
 
 def test_join_open_creates_non_autoconnect_profile():
@@ -315,3 +332,23 @@ def test_wifi_security_reads_key_mgmt():
     assert NetworkOps(run=run).wifi_security("Home") == "sae"
     run, _ = fake_run({("-s", "-g", "802-11-wireless-security.key-mgmt"): ("", 10)})
     assert NetworkOps(run=run).wifi_security("Home") == ""
+
+
+def test_setup_window_closing_mid_handoff_is_retried_once(tmp_path):
+    net = FakeNet(join_fail_times=1)
+    p, cfg, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert p.state.done and p.state.error is None
+    assert sum(1 for e in net.log if e[0] == "join") == 2
+    # Home Wi-Fi was restored between attempts, not left on the setup network.
+    joins = [i for i, e in enumerate(net.log) if e[0] == "join"]
+    assert any(e == ("up", "Home WiFi") for e in net.log[joins[0]:joins[1]])
+
+
+def test_join_failing_twice_gives_up(tmp_path):
+    net = FakeNet(join_fail_times=5)
+    p, cfg, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert p.state.error
+    assert sum(1 for e in net.log if e[0] == "join") == 2
+    assert net.log[-2:] == [("up", "Home WiFi"), ("delete", SETUP_CON_NAME)]

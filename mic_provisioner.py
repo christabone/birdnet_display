@@ -47,9 +47,13 @@ class NetworkOps:
         return r
 
     def active_connection(self):
-        out = self._nmcli("-g", "GENERAL.CONNECTION", "dev", "show", IFACE, check=False).stdout
-        name = _unescape(out.strip())
-        return name or None
+        """UUID of the profile wlan0 is using (unique, unlike profile names), or None."""
+        out = self._nmcli("-g", "GENERAL.CON-UUID", "dev", "show", IFACE, check=False).stdout
+        return _unescape(out.strip()) or None
+
+    def connection_name(self, con):
+        out = self._nmcli("-g", "connection.id", "connection", "show", con, check=False).stdout
+        return _unescape(out.strip())
 
     def _field(self, con, field):
         r = self._nmcli("-s", "-g", field, "connection", "show", con, check=False)
@@ -168,25 +172,33 @@ class Provisioner:
         except ProvisionError as e:
             return self._fail(str(e))
 
-        watchdog = self.net.arm_watchdog(home, WATCHDOG_SECONDS)
-        join_error, sent = None, False
-        try:
-            self._step("join_setup_network",
-                       "Connecting to the microphone — the display will be offline for about a minute.")
-            self.net.join_open(SETUP_SSID, SETUP_CON_NAME)
-            self._step("send_wifi_details", "Giving the microphone your Wi-Fi details…")
-            sent = self._send_credentials(ssid, psk)
-        except Exception as e:
-            join_error = e
-            print(f"[WARN] Could not join mic setup network: {e}")
+        sent = False
+        for attempt in range(2):
+            watchdog = self.net.arm_watchdog(home, WATCHDOG_SECONDS)
+            join_error = None
+            try:
+                self._step("join_setup_network",
+                           "Connecting to the microphone — the display will be offline for about a minute.")
+                self.net.join_open(SETUP_SSID, SETUP_CON_NAME)
+                self._step("send_wifi_details", "Giving the microphone your Wi-Fi details…")
+                sent = self._send_credentials(ssid, psk)
+            except Exception as e:
+                join_error = e
+                print(f"[WARN] Could not join mic setup network (attempt {attempt + 1}): {e}")
 
-        restored = self._return_home(home)
-        if restored:
-            watchdog.kill()
-        if join_error is not None:
+            restored = self._return_home(home)
+            if restored:
+                watchdog.kill()
+            if not restored:
+                return self._fail("The display couldn't reconnect to Wi-Fi. It will try again by itself in a few minutes.")
+            if join_error is None:
+                break
+            # The mic's setup window may have closed mid-handoff (it restarts every ~3 minutes): wait for it once more.
+            if attempt == 0:
+                self._step("find_setup_network", "Looking for the microphone again…")
+                if self._wait_for_setup_network():
+                    continue
             return self._fail("Couldn't connect to the microphone. Unplug it for 5 seconds, plug it back in, and try again.")
-        if not restored:
-            return self._fail("The display couldn't reconnect to Wi-Fi. It will try again by itself in a few minutes.")
 
         self._step("find_mic", "Waiting for the microphone to join your Wi-Fi…")
         mic = self._find_mic(known)
@@ -212,7 +224,7 @@ class Provisioner:
         home = self.net.active_connection()
         if not home:
             raise ProvisionError("The display needs to be connected to Wi-Fi first.")
-        if home == SETUP_CON_NAME:
+        if self.net.connection_name(home) == SETUP_CON_NAME:
             raise ProvisionError("The display is still on the microphone's setup network. Restart the display, then try again.")
         ssid, psk = self.net.wifi_credentials(home)
         if not ssid:

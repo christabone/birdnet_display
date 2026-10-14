@@ -26,6 +26,25 @@ Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority
 
 > Before checkout: compare the Pi 4 price at Canadian resellers (PiShop.ca, BuyaPi.ca, CanaKit). Amazon items should come from **amazon.ca**.
 
+## Amazon.ca Order (checked 2026-10-14)
+
+Prices in CAD. "CA" = ships from Amazon.ca stock; "US" = shipped internationally from Amazon US.
+
+| Qty | Product (search name) | ASIN | Price | Ships | Notes |
+|---:|---|---|---:|---|---|
+| 1 | Freenove Touchscreen for Raspberry Pi 5/4, 5" IPS 800x480 capacitive DSI | B0B455LDKH | 49.95 | CA | Same OEM board as the case's screen (rear photo match, ~85–90%). **Includes Pi 4 15-pin cables**, so no separate DSI cable. Measure holes ≈111.1 × 67.9 mm on arrival |
+| 1 | SanDisk 64GB High Endurance microSD + adapter | B07P3D6Y5B | 49.63 | CA, sold by Amazon.ca | 32 GB version B07P14QHB7 is $39.95 |
+| 1 | MECCANIXITY M2.5 x 3 L x 3.5 OD brass heat-set inserts, 68 pcs | B0FMXK9SY7 | 13.89 | US (+$5.02) | Exact size. Fast fallback: HANGLIFE M2.5 x D3.5 x **L4** 100 pcs, B0CS6YVJYD, $10.99 CA (1 mm longer than the case expects) |
+| 1 | DTGN M2.5 button head socket screw kit, 562 pcs, 304 SS (4–20 mm) | B0DQDG74NC | 15.59 | CA | |
+| 1 | Zmbroll M2.5 countersunk socket screw kit, 500 pcs, 304 SS (4–20 mm) | B0DZCJBTMZ | 16.88 | CA | |
+| 1 | MECCANIXITY M2-0.4 x 6 button head socket screws, 20 pcs, 304 SS | B0FY5N5PBD | 9.99 | CA | Only 1 left. Backup: iexcell M2x6 button head 100 pcs, B0DLKDDYZV (unverified) |
+| 1 | uxcell silicone O-rings 13 OD / 10 ID / 1.5 mm, 100 pcs | B07FS654L9 | 15.49 | CA | Exact size |
+| 1 | NUOBESTY/Keroprins ePTFE breathable membrane sticker ~12 × 12 mm | B0HKF1XHMD | 8.69 | third party, Oct 28–Nov 3 | **Not acoustic-rated** (headlight vent). Test buy; see note |
+| opt | PATIKIL 1/4"-20 x 6 mm L x 8 mm OD brass heat-set inserts, 50 pcs | B0DX1SM4N6 | 13.99 | CA | Camera-thread mount |
+| opt | LEONTOOL 304 SS DIY hose clamp kit (3 m strap + 8 fasteners) | B0DRD71ZMN | 13.19 | CA | Or buy clamps at the hardware store |
+
+**Acoustic vent note:** no true acoustic membrane is on amazon.ca. Buy the cheap ePTFE vent as a test, and order real acoustic vents from AliExpress ("IP67 acoustic vent sticker 6mm" / "waterproof acoustic membrane mic", 2–3 weeks) as the intended part. Bench-compare audio with and without the membrane.
+
 ## DigiKey — Mic Unit
 
 | Qty | Part | Mfr PN | DigiKey PN | Approx | Notes |

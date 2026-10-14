@@ -31,6 +31,7 @@ Background research behind [../parts-list.md](../parts-list.md) and the [design 
 
 - DigiKey blocks automated access (Cloudflare 403). Listings were confirmed via search-indexed product pages; **prices and stock are from cached snapshots**.
 - **XIAO boards:** C6 (113991254) in stock; C5 (100010048) out of stock, 4-week lead; C3 (113991054) in stock and includes an FPC antenna (fallback); S3 out of stock.
+- **Decision (2026-10-14):** the C6 showed **0 in stock** on DigiKey (1 expected 2026-10-23), so the build uses the **XIAO ESP32-C3** (113991054). It includes an FPC U.FL antenna (no separate antenna needed), and firmware v1.11+ maps its pins correctly. The C6 notes below are kept for reference.
 - **C6 antenna:** the board has a ceramic antenna plus U.FL with an RF switch (GPIO3 enable, GPIO14 selects ceramic vs U.FL). The birdnetgo-esp32-rtsp-mic README states the firmware **selects the external antenna path by default on the C6**, so a U.FL antenna is needed.
 - **Enclosures:**
   - Bud PN-1320-MB / -CMB (64×58×35 ext, 58×52×30 int, IP65/66, brackets): in stock.

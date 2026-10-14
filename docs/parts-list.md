@@ -10,9 +10,8 @@
 
 | Qty | Part | Mfr PN | DigiKey PN | Approx | Notes |
 |---:|---|---|---|---|---|
-| 2 | Seeed XIAO ESP32-C6 | 113991254 | 1597-113991254-ND | ~$5.38 ea | 1 spare. C5 is out of stock; C6 is fully supported by the firmware |
+| 2 | Seeed XIAO ESP32-C3 (includes U.FL antenna) | 113991054 | (see page) | ~$5 ea | 1 spare. Switched from C6 (0 in stock 2026-10-14). Firmware-supported; Wi-Fi 4 is fine for one audio stream |
 | 2 | Adafruit SPH0645LM4H I2S MEMS mic breakout | 3421 | 1528-1908-ND | ~$7 ea | 1 spare; the bare chip is going obsolete. Header strip ships loose |
-| 1 | SparkFun 2.4 GHz U.FL PCB antenna, 100 mm | 18086 | — | ~$2 | Required: firmware selects the C6's external-antenna path by default |
 | 2 | Bud PN-1320-MB enclosure, gray, with brackets | PN-1320-MB | 377-1878-ND | ~$7.90 ea | 64×58×35 ext / 58×52×30 int, IP65/66. 1 for drilling practice |
 | 2 | Jacob PG7 nylon cable gland + locknut, IP68 | 50.007PA/SW/G | — | <$1 ea | 3–6.5 mm cable |
 | 1 | L-com USB-A to USB-C cable, 5 m | CAU2CA-5M | 5073-CAU2CA-5M-ND | check | USB-C end gets cut off and soldered to the XIAO through the gland |
@@ -77,9 +76,8 @@ BIRDNET DISPLAY + OUTDOOR WI-FI MIC — PARTS LIST (2026-10-14)
 Prices are approximate; check each live page before checkout.
 
 === DIGIKEY: MIC UNIT ===
-2x  Seeed XIAO ESP32-C6 ............................ Mfr PN 113991254   (DK 1597-113991254-ND)  ~$5.38 ea  (1 spare)
+2x  Seeed XIAO ESP32-C3 (includes U.FL antenna) .... Mfr PN 113991054                            ~$5 ea  (1 spare)
 2x  Adafruit SPH0645LM4H I2S MEMS mic breakout ..... Mfr PN 3421        (DK 1528-1908-ND)       ~$7 ea     (1 spare)
-1x  SparkFun 2.4 GHz U.FL PCB antenna, 100 mm ...... Mfr PN 18086                                ~$2
 2x  Bud PN-1320-MB enclosure, gray, w/ brackets .... Mfr PN PN-1320-MB  (DK 377-1878-ND)        ~$7.90 ea  (1 for drilling practice)
 2x  Jacob PG7 nylon cable gland + locknut, IP68 .... Mfr PN 50.007PA/SW/G                        <$1 ea
 1x  L-com USB-A to USB-C cable, 5 m ................ Mfr PN CAU2CA-5M   (DK 5073-CAU2CA-5M-ND)

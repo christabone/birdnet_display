@@ -33,9 +33,9 @@ A gift build for Chris's parents: the BirdNET Display (indoors) plus a weatherpr
 ## 2. Hardware — Outdoor Mic Unit
 
 ### Electronics
-- Seeed XIAO ESP32-C6 (C5 acceptable) running birdnetgo-esp32-rtsp-mic v1.26+, flashed via the web flasher.
+- Seeed **XIAO ESP32-C3** (switched from the C6, which was out of stock 2026-10-14; C6/C5 also work) running birdnetgo-esp32-rtsp-mic v1.26+, flashed via the web flasher.
 - Adafruit SPH0645LM4H I2S breakout, wired per firmware README (BCLK→D3, WS→D1, SD→D2, 3V3, GND, SEL→GND). Firmware **Mic format = MSB / left-justified** (`mic_format=1`).
-- 2.4 GHz U.FL stick-on antenna inside the box (SparkFun 18086 or similar; plastic is RF-transparent). Required: the firmware selects the C6's external-antenna path by default. Sealed external antenna only if RSSI at the mount point is worse than about −75 dBm.
+- The C3's included 2.4 GHz FPC U.FL antenna, stuck inside the box (plastic is RF-transparent). Use a sealed external antenna only if RSSI at the mount point is worse than about −75 dBm.
 
 ### Enclosure (hybrid)
 - **Box:** **Bud PN-1320-MB** — polycarbonate, opaque gray lid, mounting brackets, IP65/66, **64 × 58 × 35 mm external / 58 × 52 × 30 mm internal**. (IP68 PN-1320-AMB is the same footprint if it comes back in stock; Hammond 1555B2GY 65 × 65 × 40 mm IP68 is the roomier fallback.)

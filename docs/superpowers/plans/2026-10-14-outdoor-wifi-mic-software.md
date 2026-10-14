@@ -2547,8 +2547,8 @@ No code unless a check fails. A failure goes back to the owning task as a bug fi
   3. Clone your fork, check out `outdoor-wifi-mic`, and run `./install.sh`. Answer **y** to kiosk and to the fan prompt if wired.
   4. Reboot.
 - [ ] **Step 2: Prepare the mic.**
-  1. Flash the XIAO C6 at https://esp32mic.msmeteo.cz.
-  2. Wire the SPH0645 per `docs/research/sourcing-notes.md`, attach the U.FL antenna, and power from USB.
+  1. Flash the XIAO C3 at https://esp32mic.msmeteo.cz.
+  2. Wire the SPH0645 per `docs/research/sourcing-notes.md` (use the **C3 GPIO** column), attach the included FPC antenna, and power from USB.
   3. Leave it unconfigured, so it broadcasts `ESP32-RTSP-Mic-AP`.
 - [ ] **Step 3: Add the mic.** Touchscreen → Settings → Microphone → Add microphone.
   - Expected: progress messages, the display back on Wi-Fi within about 90 s, then "Microphone added!".

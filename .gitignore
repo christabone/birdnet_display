@@ -32,3 +32,9 @@ MANIFEST
 
 # Ignore static bird images cache
 static/bird_images_cache/
+
+# Local runtime state (never commit)
+mic_config.json
+pinned_species.json
+venv/
+.venv/

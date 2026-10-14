@@ -14,7 +14,6 @@
 | 2 | Adafruit SPH0645LM4H I2S MEMS mic breakout | 3421 | 1528-1908-ND | ~$7 ea | 1 spare; the bare chip is going obsolete. Header strip ships loose |
 | 2 | Bud PN-1320-MB enclosure, gray, with brackets | PN-1320-MB | 377-1878-ND | ~$7.90 ea | 64×58×35 ext / 58×52×30 int, IP65/66. 1 for drilling practice |
 | 2 | Jacob PG7 nylon cable gland + locknut, IP68 | 50.007PA/SW/G | — | <$1 ea | 3–6.5 mm cable |
-| 1 | L-com USB-A to USB-C cable, **1–2 m** | CAU2CA (1 m or 2 m length) | (see page) | check | Mic mounts near the outlet. USB-C end gets cut off and soldered to the XIAO through the gland. Any decent spare USB-A to C cable also works |
 | 1 | StarTech USB-A wall charger | USB2PACWH | — | check | Lives under the outdoor outlet cover |
 | 1 | Adafruit 26 AWG silicone wire, 2 m, red | 1877 | — | $0.95 | |
 | 1 | Adafruit 26 AWG silicone wire, 2 m, black | 1880 | — | $0.95 | |
@@ -36,6 +35,7 @@
 |---:|---|---|
 | 1 | **Hosyond 5" DSI 800×480 IPS capacitive touchscreen** — ASIN [B0CXTFN8K9](https://www.amazon.com/dp/B0CXTFN8K9) | ~$35. Same OEM board as the case's AliExpress screen. Backup: iUoyoMon [B0F1D5LNPD](https://www.amazon.com/dp/B0F1D5LNPD). **Not** Waveshare (holes 2 mm wider) |
 | 1 | 15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15–20 cm | Screen ships with a Pi 5 cable |
+| 1 | Any cheap USB-A to USB-C cable, 1–2 m (or a spare phone cable) | Mic power. USB-C end gets cut off and soldered to the XIAO through the gland. Skip L-com on DigiKey (~$69 CAD) |
 | 1 | Waterproof acoustic membrane vent stickers, ePTFE, ~6–10 mm | Search "waterproof acoustic membrane vent sticker". Not on DigiKey |
 | 1 | M2.5 heat-set inserts, M2.5 × D3.5 × L3 | 4 for display, 6 for mic |
 | 1 | M2.5 button-head screw kit (4 / 6 / 8 mm) | Display: 4× 4 mm, 4× 8 mm; mic: 2× 4 mm |
@@ -79,7 +79,6 @@ Prices are approximate; check each live page before checkout.
 2x  Adafruit SPH0645LM4H I2S MEMS mic breakout ..... Mfr PN 3421        (DK 1528-1908-ND)       ~$7 ea     (1 spare)
 2x  Bud PN-1320-MB enclosure, gray, w/ brackets .... Mfr PN PN-1320-MB  (DK 377-1878-ND)        ~$7.90 ea  (1 for drilling practice)
 2x  Jacob PG7 nylon cable gland + locknut, IP68 .... Mfr PN 50.007PA/SW/G                        <$1 ea
-1x  L-com USB-A to USB-C cable, 1-2 m .............. Mfr PN CAU2CA-xM (pick 1 m or 2 m on the CAU2CA-5M page's length options)
 1x  StarTech USB-A wall charger .................... Mfr PN USB2PACWH
 1x  Adafruit 26 AWG silicone wire, 2 m (red) ....... Mfr PN 1877                                 $0.95
 1x  Adafruit 26 AWG silicone wire, 2 m (black) ..... Mfr PN 1880                                 $0.95
@@ -96,6 +95,7 @@ Prices are approximate; check each live page before checkout.
 1x  Hosyond 5" DSI 800x480 IPS capacitive touchscreen   ASIN B0CXTFN8K9  ~$35
       (backup: iUoyoMon 5" DSI 800x480, ASIN B0F1D5LNPD)
 1x  15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15-20 cm  (screen ships with a Pi 5 cable)
+1x  Any cheap USB-A to USB-C cable, 1-2 m, or a spare phone cable  (mic power; gets cut. Skip L-com, ~$69 CAD)
 1x  Waterproof acoustic membrane vent stickers, ePTFE, ~6-10 mm  (search: "waterproof acoustic membrane vent sticker")
 1x  M2.5 heat-set threaded inserts, M2.5 x D3.5 x L3  (need 4+ for display, 6 for mic)
 1x  M2.5 button-head screw kit incl. 4 mm, 6 mm, 8 mm  (need 4x 4 mm, 4x 8 mm button-head)

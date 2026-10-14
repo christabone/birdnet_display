@@ -6,6 +6,26 @@
 
 > Prices are approximate, taken from cached listing snapshots. DigiKey blocks automated access, so check each live page for price and stock before checkout.
 
+## DigiKey Cart (as built, DigiKey Canada, 2026-10-14)
+
+Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority).
+
+| Qty | DigiKey PN | Mfr PN | Item | Unit | Ext |
+|---:|---|---|---|---:|---:|
+| 2 | 1597-113991054-ND | 113991054 | Seeed XIAO ESP32-C3 | 8.38 | 16.76 |
+| 2 | 1528-1908-ND | 3421 | Adafruit SPH0645LM4H breakout | 10.41 | 20.82 |
+| 2 | 377-1878-ND | PN-1320-MB | Bud PN-1320-MB gray box | 12.61 | 25.22 |
+| 2 | 2291-50.007PA/SW/G-ND | 50.007PA/SW/G | Jacob PG7 gland + locknut | 2.14 | 4.28 |
+| 1 | 1528-1877AD-ND | 1877 | 26 AWG silicone wire, red | 1.42 | 1.42 |
+| 1 | 1528-1880-ND | 1880 | 26 AWG silicone wire, green | 1.42 | 1.42 |
+| 1 | 1528-1882AD-ND | 1882 | 26 AWG silicone wire, white | 1.42 | 1.42 |
+| 1 | 1528-392-ND | 392 | 0.1" male header, 10-pack | 7.41 | 7.41 |
+| 1 | 2648-SC0194(9)-ND | SC0194(9) | Raspberry Pi 4B 4 GB | 149.79 | 149.79 |
+| 1 | 2648-SC0445-ND | SC0445 | Raspberry Pi 15 W USB-C PSU | 11.98 | 11.98 |
+| 1 | 1597-114992661-ND | 114992661 | Seeed Armor Lite heatsink + PWM fan | 15.97 | 15.97 |
+
+> Before checkout: compare the Pi 4 price at Canadian resellers (PiShop.ca, BuyaPi.ca, CanaKit). Amazon items should come from **amazon.ca**.
+
 ## DigiKey — Mic Unit
 
 | Qty | Part | Mfr PN | DigiKey PN | Approx | Notes |

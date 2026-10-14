@@ -39,11 +39,11 @@ Prices in CAD. "CA" = ships from Amazon.ca stock; "US" = shipped internationally
 | 1 | Zmbroll M2.5 countersunk socket screw kit, 500 pcs, 304 SS (4–20 mm) | B0DZCJBTMZ | 16.88 | CA | |
 | 1 | MECCANIXITY M2-0.4 x 6 button head socket screws, 20 pcs, 304 SS | B0FY5N5PBD | 9.99 | CA | Only 1 left. Backup: iexcell M2x6 button head 100 pcs, B0DLKDDYZV (unverified) |
 | 1 | uxcell silicone O-rings 13 OD / 10 ID / 1.5 mm, 100 pcs | B07FS654L9 | 15.49 | CA | Exact size |
-| 1 | NUOBESTY/Keroprins ePTFE breathable membrane sticker ~12 × 12 mm | B0HKF1XHMD | 8.69 | third party, Oct 28–Nov 3 | **Not acoustic-rated** (headlight vent). Test buy; see note |
+| opt | NUOBESTY/Keroprins ePTFE breathable membrane sticker ~12 × 12 mm | B0HKF1XHMD | 8.69 | third party, Oct 28–Nov 3 | **Not acoustic-rated** (headlight vent). Test buy; see note |
 | opt | PATIKIL 1/4"-20 x 6 mm L x 8 mm OD brass heat-set inserts, 50 pcs | B0DX1SM4N6 | 13.99 | CA | Camera-thread mount |
 | opt | LEONTOOL 304 SS DIY hose clamp kit (3 m strap + 8 fasteners) | B0DRD71ZMN | 13.19 | CA | Or buy clamps at the hardware store |
 
-**Acoustic vent note:** no true acoustic membrane is on amazon.ca. Buy the cheap ePTFE vent as a test, and order real acoustic vents from AliExpress ("IP67 acoustic vent sticker 6mm" / "waterproof acoustic membrane mic", 2–3 weeks) as the intended part. Bench-compare audio with and without the membrane.
+**Acoustic vent plan:** no true acoustic membrane is on amazon.ca. The mic ships with a fine bug mesh over the port, behind the hood. **Chris's dad will order real acoustic vents from AliExpress** ("IP67 acoustic vent sticker 6mm" / "waterproof acoustic membrane mic") **and apply one later**, following [guides/adding-the-mic-membrane.md](guides/adding-the-mic-membrane.md). The Keroprins headlight vent above is optional (bench comparison only).
 
 ## DigiKey — Mic Unit
 

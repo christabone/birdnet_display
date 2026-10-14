@@ -40,12 +40,12 @@ A gift build for Chris's parents: the BirdNET Display (indoors) plus a weatherpr
 ### Enclosure (hybrid)
 - **Box:** **Bud PN-1320-MB** — polycarbonate, opaque gray lid, mounting brackets, IP65/66, **64 × 58 × 35 mm external / 58 × 52 × 30 mm internal**. (IP68 PN-1320-AMB is the same footprint if it comes back in stock; Hammond 1555B2GY 65 × 65 × 40 mm IP68 is the roomier fallback.)
 - **Bottom face (pointing down):**
-  - Mic port: about 3–4 mm hole, covered outside by an **adhesive IP67 acoustic vent membrane**.
+  - Mic port: about 3–4 mm hole, covered outside by an **adhesive IP67 acoustic vent membrane**. Ships with a **fine stainless/nylon bug mesh** glued over the port; Chris's dad applies the membrane later (`docs/guides/adding-the-mic-membrane.md`).
   - Power entry: **PG7 nylon cable gland** (Jacob 50.007PA/SW/G); cable gets a drip loop before entry. Keep the gland at least 20 mm from the mic port.
   - A USB-C plug will not pass through a PG7 gland, so the cable's USB-C end is cut off, fed through the gland, and the 5 V / GND conductors are **soldered to the XIAO 5V/GND pads**. Firmware is flashed over USB before final assembly; later updates use OTA.
 - **Printed parts (ASA):**
   1. **Inner tray** — holds the XIAO and presses the mic breakout's port against the bottom hole through a **silicone O-ring** (or closed-cell EPDM ring) so sound goes to the mic, not into the box. The membrane is the water barrier; the O-ring is the acoustic seal.
-  2. **Rain hood** — slides over the box, about 15 mm overhang on all sides and skirted below the bottom face so wind-driven rain can't hit the vent directly. Leaves an open air path to the mic port.
+  2. **Rain hood** — **tool-free slide-on/snap-fit** (so the membrane can be added later without disassembly), slides over the box, about 15 mm overhang on all sides and skirted below the bottom face so wind-driven rain can't hit the vent directly. Leaves an open air path to the mic port.
   3. **Mount bracket** — screws to the box's mounting lugs; hose-clamp/strap slots (post/tree), screw holes (fence), and a 1/4-20 heat-set insert.
 - **Overall size target:** about 75 × 70 × 50 mm with hood and mount.
 - **No desiccant:** the acoustic vent is vapor-permeable, so desiccant would saturate within weeks. Moisture control is via downward-facing vent/gland, drip loop, hood, and the XIAO's slight self-heating. Optional: conformal coat on the XIAO only (never on the mic or its port).

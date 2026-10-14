@@ -54,6 +54,10 @@ cp "$SOURCE_DIR/run.sh" "$INSTALL_DIR/"
 cp "$SOURCE_DIR/kiosk_launcher.sh" "$INSTALL_DIR/"
 cp "$SOURCE_DIR/cache_builder.py" "$INSTALL_DIR/"
 cp "$SOURCE_DIR/species_list.csv" "$INSTALL_DIR/"
+for f in mic_manager.py mic_service.py mic_provisioner.py mic_routes.py birdnet_go_config.py remote_help.py rtsp_monitor.py setup_remote_help.sh; do
+    cp "$SOURCE_DIR/$f" "$INSTALL_DIR/"
+done
+chmod +x "$INSTALL_DIR/setup_remote_help.sh"
 mkdir -p "$INSTALL_DIR/static"
 cp -r "$SOURCE_DIR/static/index.html" "$INSTALL_DIR/static/"
 cp -r "$SOURCE_DIR/static/bird_images_cache" "$INSTALL_DIR/static/"
@@ -313,6 +317,30 @@ EOF
     echo -e "\n${GREEN}Kiosk setup is complete. A reboot is required for the changes to take effect.${NC}"
     REBOOT_REQUIRED=true
 fi
+
+# --- Step 10b: Outdoor mic discovery (mDNS) ---
+echo -e "\n${YELLOW}Step 10b: Ensuring mDNS (avahi) is available for finding the outdoor mic...${NC}"
+sudo apt-get install -y avahi-daemon libnss-mdns
+sudo systemctl enable --now avahi-daemon
+echo -e "${GREEN}✅ mDNS ready.${NC}"
+
+# --- Step 10c: Optional quiet fan control ---
+echo ""
+read -p "Is the heatsink fan's control wire on GPIO14? Turn the fan on only above 70°C? (y/N) " -n 1 -r
+echo
+if [[ $REPLY =~ ^[Yy]$ ]]; then
+    BOOT_CONFIG="/boot/firmware/config.txt"
+    [ -f "$BOOT_CONFIG" ] || BOOT_CONFIG="/boot/config.txt"
+    if ! grep -q '^dtoverlay=gpio-fan' "$BOOT_CONFIG"; then
+        echo "dtoverlay=gpio-fan,gpiopin=14,temp=70000" | sudo tee -a "$BOOT_CONFIG" > /dev/null
+        echo -e "${GREEN}✅ Fan set to switch on at 70°C (after reboot).${NC}"
+        REBOOT_REQUIRED=true
+    else
+        echo -e "${GREEN}✅ Fan overlay already configured.${NC}"
+    fi
+fi
+
+echo -e "\n${YELLOW}Remote help: on your bench, run ${NC}$INSTALL_DIR/setup_remote_help.sh${YELLOW} once to pre-load WireGuard.${NC}"
 
 # --- Step 11: Optional BirdNET-Go Network Configuration ---
 echo ""

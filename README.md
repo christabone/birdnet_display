@@ -299,6 +299,29 @@ The `ap_setup.sh` script configures a **dedicated WiFi network** on a USB WiFi a
 
 The settings are persistent and will be restored on boot. You can connect to your Pi's web interface from your home WiFi network (wlan0) while the microphone streams over the dedicated network (wlan1).
 
+### Outdoor Wi-Fi Microphone (home Wi-Fi, set up from the touchscreen)
+
+This fork supports an outdoor ESP32 mic ([birdnetgo-esp32-rtsp-mic](https://github.com/Sukecz/birdnetgo-esp32-rtsp-mic) v1.26+) on your **home Wi-Fi**. No USB Wi-Fi adapter or `ap_setup.sh` is needed.
+
+1. Make sure the display is on your Wi-Fi (Settings → Open WiFi Settings).
+2. Plug in the mic. A brand-new mic broadcasts the setup network `ESP32-RTSP-Mic-AP`.
+3. Settings → **Microphone** → **Add microphone**. The display is offline for about a minute while it hands your Wi-Fi details to the mic, then finds it and points BirdNET-Go at it.
+
+The Microphone screen shows signal, temperature, and streaming status. It has controls for sensitivity, wind/traffic noise reduction, restart, and remove. If the mic's IP changes, the display finds it again automatically.
+
+Design and parts: `docs/superpowers/specs/2026-10-14-outdoor-wifi-mic-design.md`, `docs/parts-list.md`.
+
+### Remote Help (WireGuard)
+
+Run `./setup_remote_help.sh` once on your own network before gifting. It:
+- generates the display's key
+- writes a split-tunnel `wg0.conf` to your WireGuard server
+- re-resolves your DDNS name every 5 minutes
+- switches SSH to keys only
+- prints the `[Peer]` block to add to your server
+
+The Settings screen shows a green **Remote help** dot when the tunnel is up.
+
 ### Web Interface Controls
 
 The web interface provides several interactive controls accessible by clicking on the main display area to reveal a QR code and settings icon:

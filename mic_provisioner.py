@@ -14,6 +14,7 @@ SETUP_SSID = "ESP32-RTSP-Mic-AP"
 SETUP_CON_NAME = "birdnet-mic-setup"
 SETUP_PORTAL = "http://192.168.4.1/wifisave"
 WATCHDOG_SECONDS = 180
+WATCHDOG_UNIT = "birdnet-mic-watchdog"
 SCAN_ATTEMPTS, SCAN_INTERVAL = 12, 10
 HOME_ATTEMPTS, HOME_INTERVAL = 3, 5
 FIND_ATTEMPTS, FIND_INTERVAL = 9, 10
@@ -79,11 +80,31 @@ class NetworkOps:
         self._nmcli("con", "delete", con, check=False)
 
     def arm_watchdog(self, con, seconds):
-        """Detached backstop: reconnect home Wi-Fi even if this process dies."""
+        """Backstop: reconnect home Wi-Fi even if this app dies or is restarted.
+
+        A transient systemd timer lives outside bird-display.service, so systemd doesn't kill it
+        along with the app. Falls back to a detached process if systemd-run isn't available.
+        """
+        stop = ["sudo", "-n", "systemctl", "stop", f"{WATCHDOG_UNIT}.timer"]
+        self.run(stop, capture_output=True, text=True, timeout=15)  # clear a leftover from a crash
+        r = self.run(["sudo", "-n", "systemd-run", f"--unit={WATCHDOG_UNIT}", f"--on-active={seconds}",
+                      "--timer-property=AccuracySec=1s", "nmcli", "con", "up", con],
+                     capture_output=True, text=True, timeout=15)
+        if r.returncode == 0:
+            return _SystemdWatchdog(self.run, stop)
+        print(f"[WARN] systemd-run watchdog unavailable ({(r.stderr or '').strip()}); using a detached process")
         return self.popen(
             ["sh", "-c", 'sleep "$1"; nmcli con up "$2"', "mic-setup-watchdog", str(seconds), con],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True,
         )
+
+
+class _SystemdWatchdog:
+    def __init__(self, run, stop_cmd):
+        self.run, self.stop_cmd = run, stop_cmd
+
+    def kill(self):
+        self.run(self.stop_cmd, capture_output=True, text=True, timeout=15)
 
 
 @dataclass

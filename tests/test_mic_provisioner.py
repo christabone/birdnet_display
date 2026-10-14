@@ -234,18 +234,39 @@ def test_join_open_creates_non_autoconnect_profile():
     assert ["nmcli", "con", "up", SETUP_CON_NAME] in calls
 
 
-def test_watchdog_passes_connection_as_argument_not_shell_text():
+def test_watchdog_is_a_systemd_timer_outside_the_app():
+    calls = []
+
+    def run(cmd, **kwargs):
+        calls.append(cmd)
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
+    handle = NetworkOps(run=run).arm_watchdog("Mom's \"Net\"; rm -rf /", 180)
+    arm = next(c for c in calls if "systemd-run" in c)
+    assert arm[:3] == ["sudo", "-n", "systemd-run"]
+    assert "--on-active=180" in arm
+    assert arm[-4:] == ["nmcli", "con", "up", "Mom's \"Net\"; rm -rf /"]
+    # A leftover timer from a crash is cleared before arming.
+    assert calls.index(["sudo", "-n", "systemctl", "stop", "birdnet-mic-watchdog.timer"]) < calls.index(arm)
+    calls.clear()
+    handle.kill()
+    assert calls == [["sudo", "-n", "systemctl", "stop", "birdnet-mic-watchdog.timer"]]
+
+
+def test_watchdog_falls_back_to_detached_process_without_systemd_run():
     started = {}
 
+    def run(cmd, **kwargs):
+        if "systemd-run" in cmd:
+            return subprocess.CompletedProcess(cmd, 1, "", "sudo: a password is required")
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+
     def popen(cmd, **kwargs):
-        started["cmd"] = cmd
-        started["kwargs"] = kwargs
+        started["cmd"], started["kwargs"] = cmd, kwargs
         return FakeProc()
 
-    NetworkOps(popen=popen).arm_watchdog("Mom's \"Net\"; rm -rf /", 180)
-    cmd = started["cmd"]
-    assert cmd[:2] == ["sh", "-c"]
-    assert cmd[-1] == "Mom's \"Net\"; rm -rf /"
+    NetworkOps(run=run, popen=popen).arm_watchdog("Home", 180)
+    assert started["cmd"][:2] == ["sh", "-c"] and started["cmd"][-1] == "Home"
     assert started["kwargs"]["start_new_session"] is True
 
 

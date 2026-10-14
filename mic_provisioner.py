@@ -57,6 +57,10 @@ class NetworkOps:
     def wifi_credentials(self, con):
         return self._field(con, "802-11-wireless.ssid"), self._field(con, "802-11-wireless-security.psk")
 
+    def wifi_security(self, con):
+        """Key management of a saved Wi-Fi profile ('' = open network)."""
+        return self._field(con, "802-11-wireless-security.key-mgmt").strip()
+
     def sees_network(self, ssid):
         self._nmcli("dev", "wifi", "rescan", "ifname", IFACE, check=False)
         out = self._nmcli("-t", "-f", "SSID", "dev", "wifi", "list", "ifname", IFACE, check=False).stdout
@@ -182,16 +186,24 @@ class Provisioner:
         self.state.message, self.state.done, self.state.running = message, True, False
 
     def _prepare(self):
-        self._step("find_setup_network", "Looking for the microphone…")
-        if not self._wait_for_setup_network():
-            raise ProvisionError("Couldn't find the microphone. Unplug its power for 5 seconds, plug it back in, then try again.")
+        # Check the display's own Wi-Fi first: no point scanning for the mic if we can't hand anything over.
         self._step("read_home_wifi", "Reading your Wi-Fi details…")
         home = self.net.active_connection()
         if not home:
             raise ProvisionError("The display needs to be connected to Wi-Fi first.")
+        if home == SETUP_CON_NAME:
+            raise ProvisionError("The display is still on the microphone's setup network. Restart the display, then try again.")
         ssid, psk = self.net.wifi_credentials(home)
         if not ssid:
             raise ProvisionError("The display needs to be connected to Wi-Fi first.")
+        security = self.net.wifi_security(home)
+        if security == "wpa-eap":
+            raise ProvisionError("This kind of Wi-Fi (enterprise login) can't be shared with the microphone. Please ask Chris for help.")
+        if security and not psk:
+            raise ProvisionError("The display couldn't read your Wi-Fi password. Please ask Chris for help.")
+        self._step("find_setup_network", "Looking for the microphone…")
+        if not self._wait_for_setup_network():
+            raise ProvisionError("Couldn't find the microphone. Unplug its power for 5 seconds, plug it back in, then try again.")
         known = frozenset(self.snapshot_fn())
         return home, ssid, psk, known
 

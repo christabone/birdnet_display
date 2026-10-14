@@ -9,7 +9,8 @@ from mic_provisioner import SETUP_CON_NAME, SETUP_SSID, NetworkOps, Provisioner
 
 class FakeNet:
     def __init__(self, sees=True, home="Home WiFi", creds=("Mom's Wi-Fi & \"stuff\"", "p@ss:w\\rd"),
-                 join_error=None, up_fail_times=0):
+                 join_error=None, up_fail_times=0, key_mgmt="wpa-psk"):
+        self.key_mgmt = key_mgmt
         self.sees = sees
         self.home = home
         self.creds = creds
@@ -28,6 +29,9 @@ class FakeNet:
     def wifi_credentials(self, con):
         self.log.append(("creds", con))
         return self.creds
+
+    def wifi_security(self, con):
+        return self.key_mgmt
 
     def arm_watchdog(self, con, seconds):
         self.log.append(("watchdog", con, seconds))
@@ -243,3 +247,50 @@ def test_watchdog_passes_connection_as_argument_not_shell_text():
     assert cmd[:2] == ["sh", "-c"]
     assert cmd[-1] == "Mom's \"Net\"; rm -rf /"
     assert started["kwargs"]["start_new_session"] is True
+
+
+def test_not_on_wifi_fails_fast_without_waiting_for_scans(tmp_path):
+    net = FakeNet(home=None, sees=False)
+    p, _, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert "connected to Wi-Fi" in p.state.error
+    assert not any(e[0] == "scan" for e in net.log)
+
+
+def test_refuses_when_still_on_setup_network(tmp_path):
+    net = FakeNet(home=SETUP_CON_NAME)
+    p, _, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert p.state.error
+    assert not any(e[0] in ("join", "watchdog") for e in net.log)
+
+
+def test_unreadable_password_fails_before_leaving_home(tmp_path):
+    net = FakeNet(creds=("Home Net", ""), key_mgmt="wpa-psk")
+    p, cfg, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert "password" in p.state.error.lower()
+    assert not any(e[0] in ("join", "watchdog", "up") for e in net.log)
+
+
+def test_enterprise_wifi_is_refused(tmp_path):
+    net = FakeNet(creds=("Work Net", ""), key_mgmt="wpa-eap")
+    p, _, _ = make(tmp_path, net=net)
+    p.run_sync()
+    assert p.state.error
+    assert not any(e[0] == "join" for e in net.log)
+
+
+def test_open_network_sends_empty_password(tmp_path):
+    net, http = FakeNet(creds=("Open Net", ""), key_mgmt=""), FakeHttp()
+    p, _, _ = make(tmp_path, net=net, http=http)
+    p.run_sync()
+    assert p.state.done
+    assert http.posts[0][1] == {"s": "Open Net", "p": ""}
+
+
+def test_wifi_security_reads_key_mgmt():
+    run, _ = fake_run({("-s", "-g", "802-11-wireless-security.key-mgmt"): ("sae\n", 0)})
+    assert NetworkOps(run=run).wifi_security("Home") == "sae"
+    run, _ = fake_run({("-s", "-g", "802-11-wireless-security.key-mgmt"): ("", 10)})
+    assert NetworkOps(run=run).wifi_security("Home") == ""

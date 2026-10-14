@@ -15,6 +15,8 @@ import re
 # Import variables and functions from the new cache builder script
 from cache_builder import CACHE_DIRECTORY, SPECIES_FILE, load_species_from_file
 from mic_manager import MicConfig
+from mic_provisioner import NetworkOps, Provisioner
+from mic_routes import create_mic_blueprint
 from mic_service import MicService
 
 # --- Constants and Configuration ---
@@ -38,6 +40,8 @@ DETECTION_CACHE = { "id": None, "raw_data": [] }
 # --- Outdoor Mic ---
 MIC_CONFIG = MicConfig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mic_config.json"))
 MIC_SERVICE = MicService(MIC_CONFIG)
+PROVISIONER = Provisioner(NetworkOps(), MIC_CONFIG)
+app.register_blueprint(create_mic_blueprint(MIC_SERVICE, PROVISIONER))
 
 # --- Pinned Species Management ---
 def load_pinned_species():
@@ -738,6 +742,6 @@ if __name__ == '__main__':
         print("To build the cache, please run 'python cache_builder.py' directly.")
         sys.exit()
     
-    MIC_SERVICE.start_background(busy=lambda: False)
+    MIC_SERVICE.start_background(busy=lambda: PROVISIONER.running)
     print(f"Starting Flask server on http://0.0.0.0:{SERVER_PORT}")
     app.run(host='0.0.0.0', port=SERVER_PORT)

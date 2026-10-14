@@ -89,6 +89,8 @@ $SUDO chmod 600 "$(out /etc/wireguard/wg0.conf)"
 
 write /usr/local/sbin/wg-reresolve <<EOF
 #!/bin/sh
+# If wg-quick gave up (e.g. no internet yet at first boot), wg0 is gone: bring it back up.
+ip link show wg0 >/dev/null 2>&1 || exec systemctl restart wg-quick@wg0
 # Re-resolve the DDNS endpoint so the tunnel follows Chris's home IP when it changes.
 exec wg set wg0 peer "$SERVER_PUBKEY" endpoint "$ENDPOINT"
 EOF

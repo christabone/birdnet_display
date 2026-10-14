@@ -65,3 +65,12 @@ def test_rejects_bad_input(tmp_path):
                               "--dry-run", str(tmp_path)], capture_output=True, text=True,
                              stdin=subprocess.DEVNULL)
     assert bad_key.returncode == 2
+
+
+def test_reresolve_brings_tunnel_back_if_it_failed_at_boot(tmp_path):
+    run(tmp_path)
+    script = (tmp_path / "wg-reresolve").read_text()
+    # If wg-quick gave up (no internet at first boot), the interface is gone: restart it.
+    assert "ip link show wg0" in script
+    assert "systemctl restart wg-quick@wg0" in script
+    assert script.index("ip link show wg0") < script.index("wg set wg0 peer")

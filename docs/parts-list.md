@@ -6,7 +6,7 @@
 
 > Prices are approximate, taken from cached listing snapshots. DigiKey blocks automated access, so check each live page for price and stock before checkout.
 
-## DigiKey Cart (as built, DigiKey Canada, 2026-10-14)
+## DigiKey Cart — ORDERED (DigiKey Canada, 2026-10-14)
 
 Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority).
 

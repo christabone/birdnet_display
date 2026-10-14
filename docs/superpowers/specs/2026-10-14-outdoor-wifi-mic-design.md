@@ -34,23 +34,25 @@ A gift build for Chris's parents: the BirdNET Display (indoors) plus a weatherpr
 ### Electronics
 - Seeed XIAO ESP32-C6 (C5 acceptable) running birdnetgo-esp32-rtsp-mic v1.26+, flashed via the web flasher.
 - Adafruit SPH0645LM4H I2S breakout, wired per firmware README (BCLK→D3, WS→D1, SD→D2, 3V3, GND, SEL→GND). Firmware **Mic format = MSB / left-justified** (`mic_format=1`).
-- 2.4 GHz U.FL antenna inside the box (plastic is RF-transparent). Sealed external antenna only if RSSI at the mount point is worse than about −75 dBm.
+- 2.4 GHz U.FL stick-on antenna inside the box (SparkFun 18086 or similar; plastic is RF-transparent). Required: the firmware selects the C6's external-antenna path by default. Sealed external antenna only if RSSI at the mount point is worse than about −75 dBm.
 
 ### Enclosure (hybrid)
-- **Box:** small IP65/IP67 ABS/PC box with factory lid gasket, target about **65 × 58 × 35 mm** external (fallback about 50 × 50 × 35 mm).
+- **Box:** **Bud PN-1320-MB** — polycarbonate, opaque gray lid, mounting brackets, IP65/66, **64 × 58 × 35 mm external / 58 × 52 × 30 mm internal**. (IP68 PN-1320-AMB is the same footprint if it comes back in stock; Hammond 1555B2GY 65 × 65 × 40 mm IP68 is the roomier fallback.)
 - **Bottom face (pointing down):**
   - Mic port: about 3–4 mm hole, covered outside by an **adhesive IP67 acoustic vent membrane**.
-  - Power entry: **PG7/M12 nylon cable gland**; cable gets a drip loop before entry.
+  - Power entry: **PG7 nylon cable gland** (Jacob 50.007PA/SW/G); cable gets a drip loop before entry. Keep the gland at least 20 mm from the mic port.
+  - A USB-C plug will not pass through a PG7 gland, so the cable's USB-C end is cut off, fed through the gland, and the 5 V / GND conductors are **soldered to the XIAO 5V/GND pads**. Firmware is flashed over USB before final assembly; later updates use OTA.
 - **Printed parts (ASA):**
   1. **Inner tray** — holds the XIAO and presses the mic breakout's port against the bottom hole through a **silicone O-ring** (or closed-cell EPDM ring) so sound goes to the mic, not into the box. The membrane is the water barrier; the O-ring is the acoustic seal.
   2. **Rain hood** — slides over the box, about 15 mm overhang on all sides and skirted below the bottom face so wind-driven rain can't hit the vent directly. Leaves an open air path to the mic port.
   3. **Mount bracket** — screws to the box's mounting lugs; hose-clamp/strap slots (post/tree), screw holes (fence), and a 1/4-20 heat-set insert.
 - **Overall size target:** about 75 × 70 × 50 mm with hood and mount.
-- Silica desiccant pack inside. Muted print color (gray/brown/green).
+- **No desiccant:** the acoustic vent is vapor-permeable, so desiccant would saturate within weeks. Moisture control is via downward-facing vent/gland, drip loop, hood, and the XIAO's slight self-heating. Optional: conformal coat on the XIAO only (never on the mic or its port).
+- Muted print color (gray/brown/green).
 - CAD: model around the purchased box's measured internal dims; publish `.step` + `.3mf` under `3d print files/outdoor mic housing/`, mirroring the existing folder layout.
 
 ### Power
-- Weatherproof "while-in-use" outlet cover (hardware store) + 5 V ≥1 A USB adapter + outdoor-rated USB cable (USB-C at XIAO). XIAO draws about 0.3 A; 10 m on decent gauge is fine.
+- Weatherproof "while-in-use" outlet cover (hardware store) + USB-A wall charger + 5 m USB-A cable (L-com CAU2CA-5M), USB-C end cut off and soldered as above. 28 AWG over 5 m drops about 0.6 V at Wi-Fi TX peaks (about 4.4 V at the XIAO) — acceptable. For runs over 5 m, splice in outdoor/UV-rated 18–20 AWG 2-conductor cable.
 
 ## 3. Software — Display App
 
@@ -153,10 +155,10 @@ Runs as a background job; exposes progress for the UI to poll. Steps:
   5. Pull mic power → display shows offline → plug back in → recovers.
   6. Change the mic's DHCP lease → rediscovery works.
 - **Remote help:** verify SSH and the mic UI tunnel from **off** Chris's network (phone hotspot); reboot the Pi and verify the tunnel returns unattended.
-- **Enclosure:** hose/spray test from all sides including upward spray; 24 h outdoors with desiccant check; compare audio quality (gain/noise) with and without the hood.
+- **Enclosure:** hose/spray test from all sides including upward spray; 24 h outdoors then open and inspect for moisture; compare audio quality (gain/noise) with and without the hood.
 
 ## 7. Open Items
 
 - Confirm screen source and mechanical fit (research in progress); if no fitting screen is quickly available, resize the main housing.
-- Confirm exact DigiKey part numbers (research in progress) and final box dimensions → drives the CAD.
+- Measure the received Bud PN-1320-MB (internal dims, lug positions) before final CAD.
 - Verify BirdNET-Go RTSP configuration mechanism (§3).

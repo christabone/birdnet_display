@@ -7,10 +7,27 @@ Checks if last_rtsp_connect matches last_stream_start, and reboots if they diffe
 import requests
 import sys
 
-# Configuration
-STATUS_URL = "http://10.42.0.50/api/status"
-REBOOT_URL = "http://10.42.0.50/api/action/reboot"
+import json
+import os
+
+# Configuration: the mic's address comes from the display's saved mic (mic_config.json).
+MIC_CONFIG_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mic_config.json")
 TIMEOUT = 10  # seconds
+
+
+def _mic_ip():
+    with open(MIC_CONFIG_PATH) as f:
+        return json.load(f)["ip"]
+
+
+try:
+    _IP = _mic_ip()
+except (OSError, ValueError, KeyError):
+    print(f"No mic configured ({MIC_CONFIG_PATH}); nothing to check.")
+    sys.exit(0)
+
+STATUS_URL = f"http://{_IP}/api/status"
+REBOOT_URL = f"http://{_IP}/api/action/reboot"
 
 
 def check_status():
@@ -31,7 +48,7 @@ def check_status():
         # Check if values match
         if last_rtsp_connect != last_stream_start:
             print("MISMATCH detected - triggering reboot")
-            requests.post(REBOOT_URL, timeout=TIMEOUT)
+            requests.post(REBOOT_URL, headers={"X-ESP32MIC-CSRF": "1"}, timeout=TIMEOUT)
             print("Reboot command sent")
         else:
             print("Status OK - times match")

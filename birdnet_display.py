@@ -14,6 +14,8 @@ import re
 
 # Import variables and functions from the new cache builder script
 from cache_builder import CACHE_DIRECTORY, SPECIES_FILE, load_species_from_file
+from mic_manager import MicConfig
+from mic_service import MicService
 
 # --- Constants and Configuration ---
 BASE_URL = "http://localhost:8080/"
@@ -32,6 +34,10 @@ app = Flask(__name__, template_folder='static')
 
 # --- Caching & Status Globals ---
 DETECTION_CACHE = { "id": None, "raw_data": [] }
+
+# --- Outdoor Mic ---
+MIC_CONFIG = MicConfig(os.path.join(os.path.dirname(os.path.abspath(__file__)), "mic_config.json"))
+MIC_SERVICE = MicService(MIC_CONFIG)
 
 # --- Pinned Species Management ---
 def load_pinned_species():
@@ -438,18 +444,7 @@ def data():
 
 @app.route('/audio_status')
 def audio_status():
-    try:
-        status_url = "http://10.42.0.50/api/status"
-        response = requests.get(status_url, timeout=5)
-        response.raise_for_status()
-        status_data = response.json()
-        is_connected = status_data.get("streaming") is True
-        rssi = status_data.get("wifi_rssi", 0)  # Get WiFi RSSI value, default to 0 if not present
-    except (requests.exceptions.RequestException, json.JSONDecodeError, KeyError):
-        print("[INFO] Microphone status unavailable")
-        is_connected = False
-        rssi = 0
-    return jsonify({"connected": is_connected, "rssi": rssi})
+    return jsonify(MIC_SERVICE.audio_status())
 
 @app.route('/shutdown', methods=['POST'])
 def shutdown():
@@ -743,5 +738,6 @@ if __name__ == '__main__':
         print("To build the cache, please run 'python cache_builder.py' directly.")
         sys.exit()
     
+    MIC_SERVICE.start_background(busy=lambda: False)
     print(f"Starting Flask server on http://0.0.0.0:{SERVER_PORT}")
     app.run(host='0.0.0.0', port=SERVER_PORT)

@@ -21,3 +21,20 @@ def test_ui_calls_new_api():
 
 def test_no_hardcoded_mic_ip():
     assert "10.42.0.50" not in HTML
+
+
+def _function_body(name):
+    start = HTML.index(f"function {name}(")
+    return HTML[start:HTML.index("\n            }\n", start)]
+
+
+def test_reopening_mic_screen_resumes_running_setup():
+    assert "resumeProvisionIfRunning()" in _function_body("showMicModal")
+    body = _function_body("resumeProvisionIfRunning")
+    assert "'/api/mic/provision/status'" in body and "pollProvision()" in body
+
+
+def test_restart_and_remove_report_failures():
+    for label in ["Restart the microphone?", "Remove this microphone from the display?"]:
+        handler = HTML[HTML.index(label):HTML.index("\n                });", HTML.index(label))]
+        assert "response.ok" in handler and "catch" in handler, label

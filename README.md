@@ -315,7 +315,7 @@ Design and parts: `docs/superpowers/specs/2026-10-14-outdoor-wifi-mic-design.md`
 
 Run `./setup_remote_help.sh` once on your own network before gifting. It:
 - generates the display's key
-- writes a split-tunnel `wg0.conf` to your WireGuard server
+- writes a split-tunnel `wg0.conf` on the Pi that connects to your WireGuard server
 - re-resolves your DDNS name every 5 minutes
 - switches SSH to keys only
 - prints the `[Peer]` block to add to your server

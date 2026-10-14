@@ -1401,6 +1401,18 @@
                 e.preventDefault();
                 micModal.style.display = 'flex';
                 await loadMicStatus();
+                await resumeProvisionIfRunning();
+            }
+
+            async function resumeProvisionIfRunning() {
+                if (micProvisionTimer) return;
+                try {
+                    const state = await (await fetch('/api/mic/provision/status')).json();
+                    if (state.running) {
+                        showMicProgress(state.message || 'Setting up the microphone…', false);
+                        pollProvision();
+                    }
+                } catch (error) { /* nothing to resume */ }
             }
             ['mic-settings-btn-modal', 'mic-status-icon'].forEach(id => {
                 const el = document.getElementById(id);
@@ -1463,14 +1475,27 @@
 
             document.getElementById('mic-restart-btn').addEventListener('click', () => {
                 showConfirmModal('Restart the microphone? It takes about 30 seconds.', async () => {
-                    await fetch('/api/mic/restart', { method: 'POST' });
-                    micStatusBlock.textContent = 'Restarting…';
-                    setTimeout(loadMicStatus, 30000);
+                    try {
+                        const response = await fetch('/api/mic/restart', { method: 'POST' });
+                        if (!response.ok) {
+                            showMicProgress('The microphone did not respond, so it could not be restarted.', true);
+                            return;
+                        }
+                        micStatusBlock.textContent = 'Restarting…';
+                        setTimeout(loadMicStatus, 30000);
+                    } catch (error) {
+                        showMicProgress('Could not reach the display. Try again in a moment.', true);
+                    }
                 });
             });
             document.getElementById('mic-forget-btn').addEventListener('click', () => {
                 showConfirmModal('Remove this microphone from the display?', async () => {
-                    await fetch('/api/mic/forget', { method: 'POST' });
+                    try {
+                        const response = await fetch('/api/mic/forget', { method: 'POST' });
+                        if (!response.ok) showMicProgress('Could not remove the microphone. Try again in a moment.', true);
+                    } catch (error) {
+                        showMicProgress('Could not reach the display. Try again in a moment.', true);
+                    }
                     await loadMicStatus();
                 });
             });

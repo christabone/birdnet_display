@@ -1,7 +1,7 @@
 # Outdoor Wi-Fi Mic, On-Device Mic Setup, and Remote Help — Design
 
 **Date:** 2026-10-14
-**Status:** Draft for review
+**Status:** Approved 2026-10-14
 **Builds on:** this repo (BirdNET Display) + [birdnetgo-esp32-rtsp-mic](https://github.com/Sukecz/birdnetgo-esp32-rtsp-mic) firmware v1.26
 **Parts list:** [../../parts-list.md](../../parts-list.md) · **Sourcing notes:** [../../research/sourcing-notes.md](../../research/sourcing-notes.md)
 

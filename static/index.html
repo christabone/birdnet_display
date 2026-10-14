@@ -341,6 +341,16 @@
         #settingsModal h2 { margin-bottom: 25px; }
         #wifiModal { z-index: 1300; }
         #pinnedModal { z-index: 1350; }
+        #micModal { z-index: 1320; }
+        #micModal .modal-content { min-width: 600px; max-width: 90vw; color: #111; }
+        .mic-status-block { font-size: 1.15em; font-weight: 600; padding: 12px; border-radius: 8px; background: #f1f5f9; }
+        .mic-toggle { display: flex; align-items: center; gap: 12px; font-size: 1.1em; }
+        .mic-toggle input { width: 28px; height: 28px; }
+        #mic-gain-slider { width: 100%; height: 36px; }
+        .remote-help-row { display: flex; align-items: center; gap: 8px; font-size: 0.95em; color: #475569; margin-top: 15px; }
+        .remote-help-dot { width: 12px; height: 12px; border-radius: 50%; background: #cbd5e1; display: inline-block; }
+        .remote-help-dot.on { background: #16a34a; }
+        #mic-status-icon { cursor: pointer; }
         .settings-group { margin-bottom: 20px; text-align: left; }
         .settings-group label { display: block; margin-bottom: 8px; font-weight: 500; }
         .system-buttons { display: flex; justify-content: space-between; gap: 10px; margin-top: 25px; }
@@ -613,10 +623,14 @@
             <div class="settings-group">
                 <button id="pinned-settings-btn-modal" class="settings-btn" style="width: 100%;">Manage Pinned Species</button>
             </div>
+            <div class="settings-group">
+                <button id="mic-settings-btn-modal" class="settings-btn" style="width: 100%;">Microphone</button>
+            </div>
             <div class="system-buttons">
                 <button id="restart-btn" class="system-btn restart-btn">Restart</button>
                 <button id="power-btn" class="system-btn power-btn">Power Off</button>
             </div>
+            <div class="remote-help-row"><span id="remote-help-dot" class="remote-help-dot"></span> Remote help</div>
         </div>
     </div>
 
@@ -657,6 +671,30 @@
         </div>
     </div>
     
+    <div id="micModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Microphone</h2>
+            <div id="mic-status-block" class="settings-group mic-status-block">Checking…</div>
+            <div id="mic-controls" style="display: none;">
+                <div class="settings-group">
+                    <label for="mic-gain-slider">Sensitivity: <span id="mic-gain-value">–</span></label>
+                    <input type="range" id="mic-gain-slider" min="0.5" max="10" step="0.5" value="1.5">
+                </div>
+                <div class="settings-group">
+                    <label class="mic-toggle"><input type="checkbox" id="mic-highpass-toggle"> Reduce wind &amp; traffic noise</label>
+                </div>
+                <div class="system-buttons">
+                    <button id="mic-restart-btn" class="system-btn restart-btn">Restart mic</button>
+                    <button id="mic-forget-btn" class="system-btn power-btn">Remove mic</button>
+                </div>
+            </div>
+            <div class="settings-group" style="margin-top: 20px;">
+                <button id="mic-add-btn" class="settings-btn" style="width: 100%;">Add microphone</button>
+                <div id="mic-provision-progress" class="wifi-status" style="margin-top: 12px;"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="confirmModal" class="modal-overlay">
         <div class="modal-content">
             <p id="confirmMessage"></p>
@@ -1087,6 +1125,7 @@
                     else if (settingsModal.style.display === 'flex') hideSettingsModal();
                     else if (wifiModal.style.display === 'flex') hideWifiModal();
                     else if (pinnedModal.style.display === 'flex') hidePinnedModal();
+                    else if (micModal.style.display === 'flex') hideMicModal();
                     else if (confirmModal.style.display === 'flex') {
                         confirmModal.style.display = 'none';
                         confirmAction = null;
@@ -1167,6 +1206,7 @@
                 e.stopPropagation(); // Prevent QR modal from opening
                 e.preventDefault(); // Prevent default touch behavior
                 settingsModal.style.display = 'flex';
+                updateRemoteHelpDot();
             }
             const settingsBtn = document.getElementById('settings-icon-btn');
             settingsBtn.addEventListener('click', showSettingsModal);
@@ -1339,6 +1379,153 @@
                     bars.forEach(bar => bar.classList.add('inactive'));
 
                     micIcon.title = "Microphone Status Unknown";
+                }
+            }
+
+            // ========================================
+            // MICROPHONE MODAL
+            // ========================================
+            const micModal = document.getElementById('micModal');
+            const micStatusBlock = document.getElementById('mic-status-block');
+            const micControls = document.getElementById('mic-controls');
+            const micGainSlider = document.getElementById('mic-gain-slider');
+            const micGainValue = document.getElementById('mic-gain-value');
+            const micHighpassToggle = document.getElementById('mic-highpass-toggle');
+            const micAddBtn = document.getElementById('mic-add-btn');
+            const micProvisionProgress = document.getElementById('mic-provision-progress');
+            let micProvisionTimer = null;
+
+            function hideMicModal() { micModal.style.display = 'none'; }
+            async function showMicModal(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                micModal.style.display = 'flex';
+                await loadMicStatus();
+            }
+            ['mic-settings-btn-modal', 'mic-status-icon'].forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('click', showMicModal);
+                el.addEventListener('touchend', showMicModal);
+            });
+            micModal.addEventListener('click', e => {
+                if (!e.target.closest('.modal-content')) hideMicModal();
+            });
+
+            async function loadMicStatus() {
+                try {
+                    const response = await fetch('/api/mic/status');
+                    renderMicStatus(await response.json());
+                } catch (error) {
+                    micStatusBlock.textContent = 'Could not check the microphone.';
+                    micControls.style.display = 'none';
+                }
+            }
+
+            function renderMicStatus(data) {
+                if (!data.configured) {
+                    micStatusBlock.textContent = 'No microphone set up yet.';
+                    micControls.style.display = 'none';
+                    micAddBtn.textContent = 'Add microphone';
+                    return;
+                }
+                micAddBtn.textContent = 'Set up microphone again';
+                if (!data.reachable) {
+                    micStatusBlock.textContent = 'Microphone not responding. Check that it is plugged in.';
+                    micControls.style.display = 'none';
+                    return;
+                }
+                const signal = getSignalStrength(data.rssi);
+                const temp = data.temperature_c == null ? '' : ` · ${Math.round(data.temperature_c)}°C`;
+                const state = data.overheat ? 'Too hot — paused' : (data.connected ? 'Listening' : 'Connected, not streaming');
+                micStatusBlock.textContent = `${state} · Signal ${signal.bars}/4${temp}`;
+                micControls.style.display = 'block';
+                if (data.gain != null) {
+                    micGainSlider.value = data.gain;
+                    micGainValue.textContent = Number(data.gain).toFixed(1);
+                }
+                micHighpassToggle.checked = !!data.highpass_enabled;
+            }
+
+            async function postMicSettings(body) {
+                try {
+                    const response = await fetch('/api/mic/settings', {
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(body)
+                    });
+                    if (!response.ok) showMicProgress('The microphone did not respond. Try again in a moment.', true);
+                } catch (error) {
+                    showMicProgress('The microphone did not respond. Try again in a moment.', true);
+                }
+            }
+            micGainSlider.addEventListener('input', e => { micGainValue.textContent = Number(e.target.value).toFixed(1); });
+            micGainSlider.addEventListener('change', e => postMicSettings({ gain: Number(e.target.value) }));
+            micHighpassToggle.addEventListener('change', e => postMicSettings({ highpass_enabled: e.target.checked }));
+
+            document.getElementById('mic-restart-btn').addEventListener('click', () => {
+                showConfirmModal('Restart the microphone? It takes about 30 seconds.', async () => {
+                    await fetch('/api/mic/restart', { method: 'POST' });
+                    micStatusBlock.textContent = 'Restarting…';
+                    setTimeout(loadMicStatus, 30000);
+                });
+            });
+            document.getElementById('mic-forget-btn').addEventListener('click', () => {
+                showConfirmModal('Remove this microphone from the display?', async () => {
+                    await fetch('/api/mic/forget', { method: 'POST' });
+                    await loadMicStatus();
+                });
+            });
+
+            function showMicProgress(message, isError) {
+                micProvisionProgress.textContent = message;
+                micProvisionProgress.className = 'wifi-status ' + (isError ? 'error' : 'success');
+                micProvisionProgress.style.display = 'block';
+            }
+
+            function stopProvisionPolling() {
+                clearInterval(micProvisionTimer);
+                micProvisionTimer = null;
+                micAddBtn.disabled = false;
+            }
+
+            function pollProvision() {
+                clearInterval(micProvisionTimer);
+                micAddBtn.disabled = true;
+                micProvisionTimer = setInterval(async () => {
+                    let state;
+                    try {
+                        state = await (await fetch('/api/mic/provision/status')).json();
+                    } catch (error) {
+                        return; // the page is served locally, so this is rare; just keep polling
+                    }
+                    if (state.error) {
+                        stopProvisionPolling();
+                        showMicProgress(state.error, true);
+                        micAddBtn.textContent = 'Try again';
+                    } else if (state.done) {
+                        stopProvisionPolling();
+                        showMicProgress(state.message, false);
+                        await loadMicStatus();
+                    } else {
+                        showMicProgress(state.message, false);
+                    }
+                }, 2000);
+            }
+
+            micAddBtn.addEventListener('click', async () => {
+                showMicProgress('Looking for the microphone… make sure it is plugged in.', false);
+                try {
+                    await fetch('/api/mic/provision', { method: 'POST' });  // 409 = already running; just follow it
+                } catch (error) { /* keep polling */ }
+                pollProvision();
+            });
+
+            async function updateRemoteHelpDot() {
+                const dot = document.getElementById('remote-help-dot');
+                try {
+                    const status = await (await fetch('/api/remote_help/status')).json();
+                    dot.classList.toggle('on', !!status.connected);
+                } catch (error) {
+                    dot.classList.remove('on');
                 }
             }
 

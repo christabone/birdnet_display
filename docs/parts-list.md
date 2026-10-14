@@ -89,7 +89,7 @@ Prices in CAD. "CA" = ships from Amazon.ca stock; "US" = shipped internationally
 
 | Qty | Part | Notes |
 |---:|---|---|
-| 1 | **Extra-duty (deep)** weatherproof "while-in-use" bubble outlet cover | Must close fully over the plugged-in charger; cord exits the bottom. Also confirm the outlet is **GFCI-protected** (TEST/RESET) |
+| ✓ have | **Extra-duty (deep)** weatherproof "while-in-use" bubble outlet cover (**dad already has these**) | Must close fully over the plugged-in charger; cord exits the bottom. Also confirm the outlet is **GFCI-protected** (TEST/RESET) |
 | 2 | Stainless hose clamps, sized for the post/tree | Mic mount |
 
 ## Already Have
@@ -148,7 +148,7 @@ Prices are approximate; check each live page before checkout.
 1x  Metric silicone O-ring assortment  (need ~10 mm ID x 1.5 mm)
 
 === HARDWARE STORE ===
-1x  Extra-duty (deep) weatherproof "while-in-use" bubble outlet cover  (must close over the charger; confirm outlet is GFCI)
+--  In-use bubble cover: dad already has (check it closes over the charger; confirm outlet is GFCI)
 2x  Stainless hose clamps, sized for the post/tree  (for the mic mount)
 
 === ALREADY HAVE ===

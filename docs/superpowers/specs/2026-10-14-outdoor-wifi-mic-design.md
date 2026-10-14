@@ -154,11 +154,12 @@ Runs as a background job; exposes progress for the UI to poll. Steps:
   4. Change gain/filter from the touchscreen and verify on the mic's web UI.
   5. Pull mic power → display shows offline → plug back in → recovers.
   6. Change the mic's DHCP lease → rediscovery works.
+- **Thermal:** fan wired to GPIO with `dtoverlay=gpio-fan,gpiopin=14,temp=70000` (off below 70 °C). Log `vcgencmd measure_temp` / `get_throttled` for 24 h under BirdNET-Go + kiosk; if it never nears 70 °C, the fan may be unplugged (passive).
 - **Remote help:** verify SSH and the mic UI tunnel from **off** Chris's network (phone hotspot); reboot the Pi and verify the tunnel returns unattended.
 - **Enclosure:** hose/spray test from all sides including upward spray; 24 h outdoors then open and inspect for moisture; compare audio quality (gain/noise) with and without the hood.
 
 ## 7. Open Items
 
-- Confirm screen source and mechanical fit (research in progress); if no fitting screen is quickly available, resize the main housing.
+- Screen: Hosyond 5" DSI 800x480 (Amazon B0CXTFN8K9; backup iUoyoMon B0F1D5LNPD) — same OEM board as the case's AliExpress screen. Verify corner holes 111.1 × 67.9 mm with calipers and that a Pi 4 (15-pin) DSI cable is included before mounting.
 - Measure the received Bud PN-1320-MB (internal dims, lug positions) before final CAD.
 - Verify BirdNET-Go RTSP configuration mechanism (§3).

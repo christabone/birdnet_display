@@ -55,7 +55,7 @@ Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority
 | 1 | 15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15–20 cm | Screen ships with a Pi 5 cable |
 | 1 | High-endurance microSD, 32–64 GB: Samsung PRO Endurance, SanDisk High Endurance, or Kingston High Endurance | ~$10–20. Buy "shipped and sold by Amazon" to avoid fakes. (DigiKey Kingston was ~$112 CAD) |
 | 1 | Waterproof acoustic membrane vent stickers, ePTFE, ~6–10 mm | Search "waterproof acoustic membrane vent sticker". Not on DigiKey |
-| 1 | M2.5 heat-set inserts, M2.5 × D3.5 × L3 | 4 for display, 6 for mic |
+| 1 | M2.5 heat-set inserts, M2.5 × D3.5 × L3 | **4 for the display case only** (Pi/screen are M2.5). Mic parts will use Chris's existing M3 inserts |
 | 1 | M2.5 button-head screw kit (4 / 6 / 8 mm) | Display: 4× 4 mm, 4× 8 mm; mic: 2× 4 mm |
 | 1 | M2.5 countersunk screws (4 / 6 / 8 mm) | Display: 2× 4 mm, 2× 8 mm; mic: 4× 6 mm |
 | 1 | M2 × 6 mm button-head screws | Need 2 |
@@ -72,6 +72,8 @@ Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority
 ## Already Have
 
 - ASA filament (all printed parts), TPU (backup), soldering iron
+- HANGLIFE M3 and M2 brass heat-set inserts (100 pcs each). The new mic tray, hood and mount will be designed around the **M3** inserts; measure their OD/length for the CAD
+- 3DZWMAN vertical heat-set insert press with M2–M8 tips, including M6 (1/4") for the 1/4-20 insert
 - Spare USB-A to USB-C cable, 1–2 m (mic power; USB-C end gets cut and soldered through the gland)
 - Spare **UL/CSA-listed** USB charger, ≥1 A (mic draws ~0.3 A). No outdoor-rated USB chargers exist; the in-use cover provides the wet-location protection
 
@@ -115,7 +117,7 @@ Prices are approximate; check each live page before checkout.
 1x  15-pin DSI FFC ribbon cable for Raspberry Pi 4, ~15-20 cm  (screen ships with a Pi 5 cable)
 1x  High-endurance microSD 32-64 GB (Samsung PRO Endurance / SanDisk High Endurance / Kingston High Endurance)  (sold by Amazon, avoid fakes)
 1x  Waterproof acoustic membrane vent stickers, ePTFE, ~6-10 mm  (search: "waterproof acoustic membrane vent sticker")
-1x  M2.5 heat-set threaded inserts, M2.5 x D3.5 x L3  (need 4+ for display, 6 for mic)
+1x  M2.5 heat-set threaded inserts, M2.5 x D3.5 x L3  (need 4, display case only)
 1x  M2.5 button-head screw kit incl. 4 mm, 6 mm, 8 mm  (need 4x 4 mm, 4x 8 mm button-head)
 1x  M2.5 countersunk screws, 4 mm / 6 mm / 8 mm  (need 2x 4 mm, 2x 8 mm display; 4x 6 mm mic)
 1x  M2 x 6 mm button-head screws  (need 2)
@@ -128,6 +130,7 @@ Prices are approximate; check each live page before checkout.
 
 === ALREADY HAVE ===
 ASA filament (all printed parts), TPU (backup), soldering iron
+HANGLIFE M3 + M2 heat-set inserts (mic parts will use M3), 3DZWMAN insert press w/ M2-M8 tips
 Spare USB-A to USB-C cable, 1-2 m (mic power; gets cut)
 Spare UL/CSA-listed USB charger, >=1 A (lives under the in-use cover)
 ```

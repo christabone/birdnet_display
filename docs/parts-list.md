@@ -26,7 +26,11 @@ Prices in CAD. Subtotal **$256.49**, shipping free (FedEx International Priority
 
 > Before checkout: compare the Pi 4 price at Canadian resellers (PiShop.ca, BuyaPi.ca, CanaKit). Amazon items should come from **amazon.ca**.
 
-## Amazon.ca Order (checked 2026-10-14)
+## Amazon.ca Order — ORDERED 2026-10-14 (arrives Oct 16–20)
+
+As ordered: Freenove 5" screen, SanDisk 64GB High Endurance (SDSQQNR-064G-GN6IA, card only), MECCANIXITY M2.5×3×3.5 inserts, DTGN M2.5 button heads, Zmbroll M2.5 countersunk, MECCANIXITY M2×6, uxcell 10×1.5 O-rings, PATIKIL 1/4-20 inserts. Not ordered: membrane (dad, later), hose clamps (hardware store).
+
+### Original amazon.ca research (checked 2026-10-14)
 
 Prices in CAD. "CA" = ships from Amazon.ca stock; "US" = shipped internationally from Amazon US.
 

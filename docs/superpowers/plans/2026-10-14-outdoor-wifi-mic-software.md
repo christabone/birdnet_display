@@ -14,7 +14,7 @@
 
 `birdnet_display.py` only wires them together. The touchscreen gets a new `#micModal` in `static/index.html`. A bench script `setup_remote_help.sh` pre-loads WireGuard.
 
-**Tech Stack:** Python 3.11+ (Raspberry Pi OS Bookworm), Flask, requests, `zeroconf`, `ruamel.yaml`, NetworkManager (`nmcli`), WireGuard (`wireguard-tools`), pytest, vanilla JS.
+**Tech Stack:** Python 3.11+ (Raspberry Pi OS Bookworm or Trixie; bench unit runs Trixie, Python 3.13), Flask, requests, `zeroconf`, `ruamel.yaml`, NetworkManager (`nmcli`), WireGuard (`wireguard-tools`), pytest, vanilla JS.
 
 **Spec:** `docs/superpowers/specs/2026-10-14-outdoor-wifi-mic-design.md` (approved 2026-10-14). Parts and firmware facts: `docs/parts-list.md`, `docs/research/sourcing-notes.md`.
 
@@ -2542,7 +2542,7 @@ No code unless a check fails. A failure goes back to the owning task as a bug fi
 **Files:** none (record results in `docs/research/bench-results.md`)
 
 - [ ] **Step 1: Prepare the Pi.**
-  1. Flash Raspberry Pi OS Bookworm (desktop) to the Kingston card and boot.
+  1. Flash Raspberry Pi OS Trixie (desktop) to the SanDisk card and boot.
   2. Join your home Wi-Fi.
   3. Clone your fork, check out `outdoor-wifi-mic`, and run `./install.sh`. Answer **y** to kiosk and to the fan prompt if wired.
   4. Reboot.

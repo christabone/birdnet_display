@@ -324,6 +324,31 @@ sudo apt-get install -y avahi-daemon libnss-mdns
 sudo systemctl enable --now avahi-daemon
 echo -e "${GREEN}✅ mDNS ready.${NC}"
 
+# --- Step 10b2: Passwordless sudo for only the commands the app runs ---
+# Trixie images don't give the user passwordless sudo, and the app runs these from a service with no tty.
+echo -e "\n${YELLOW}Allowing the app to run its few admin commands (BirdNET-Go restart, mic setup, remote help, reboot)...${NC}"
+CURRENT_USER=$(whoami)
+SYSTEMCTL=$(command -v systemctl) SYSTEMD_RUN=$(command -v systemd-run) TEE=$(command -v tee)
+REBOOT=$(command -v reboot || echo /usr/sbin/reboot) POWEROFF=$(command -v poweroff || echo /usr/sbin/poweroff)
+WG=$(command -v wg || echo /usr/bin/wg)
+SUDOERS_TMP=$(mktemp)
+cat > "$SUDOERS_TMP" << SUDOERS_EOF
+# BirdNET display: only these commands, nothing else
+$CURRENT_USER ALL=(root) NOPASSWD: $SYSTEMCTL restart birdnet-go.service
+$CURRENT_USER ALL=(root) NOPASSWD: $SYSTEMCTL stop birdnet-mic-watchdog.timer
+$CURRENT_USER ALL=(root) NOPASSWD: $SYSTEMD_RUN ^--unit=birdnet-mic-watchdog --on-active=[0-9]+ --timer-property=AccuracySec=1s nmcli con up [0-9a-f-]+$
+$CURRENT_USER ALL=(root) NOPASSWD: $WG show wg0 latest-handshakes
+$CURRENT_USER ALL=(root) NOPASSWD: $REBOOT, $POWEROFF
+$CURRENT_USER ALL=(root) NOPASSWD: $TEE /sys/class/backlight/10-0045/brightness
+SUDOERS_EOF
+if sudo visudo -cf "$SUDOERS_TMP" > /dev/null; then
+    sudo install -m 0440 -o root -g root "$SUDOERS_TMP" /etc/sudoers.d/birdnet-display
+    echo -e "${GREEN}✅ Admin commands allowed.${NC}"
+else
+    echo -e "${RED}ERROR: the sudoers rule didn't validate; skipped it. Mic setup and remote-help status won't work.${NC}"
+fi
+rm -f "$SUDOERS_TMP"
+
 # --- Step 10c: Optional quiet fan control ---
 echo ""
 read -p "Is the heatsink fan's control wire on GPIO14? Turn the fan on only above 70°C? (y/N) " -n 1 -r
